@@ -4,6 +4,7 @@ from django.db import models
 class User(models.Model):
     name = models.CharField(max_length=30, help_text="Имя Фамилия")
     eMail = models.EmailField()
+    user_id = models.ForeignKey()
 
     def __str__(self):
         return self.name
@@ -26,10 +27,6 @@ class CommentList(models.Model):
 class Comment(models.Model):
     author = models.CharField(max_length=30)
     text_field = models.TextField()
-
-
-# class Photo(models.Model):
-#     path = models.CharField(max_length=40)
 
 
 class Step(models.Model):
