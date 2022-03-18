@@ -1,6 +1,3 @@
-from ast import Delete
-from email.policy import default
-from tkinter import CASCADE
 from django.db import models
 
 
@@ -31,7 +28,7 @@ class Recipe(models.Model):
 
 
 class Comment(models.Model):
-    recept_id = models.ForeignKey(on_delete=CASCADE)
+    recept_id = models.ForeignKey(on_delete=models.CASCADE)
 
     author = models.CharField(max_length=30)
     text_field = models.TextField()
@@ -43,7 +40,7 @@ class Comment(models.Model):
 class Step(models.Model):
 
     step_id = models.AutoField()
-    recept_id = models.ForeignKey(on_delete=CASCADE)
+    recept_id = models.ForeignKey(on_delete=models.CASCADE)
 
     text_field = models.TextField()
     photo = models.ImageField()
@@ -55,7 +52,7 @@ class Step(models.Model):
 class Ingredient(models.Model):
 
     igr_id = models.AutoField()
-    recept_id = models.ForeignKey(on_delete=CASCADE)
+    recept_id = models.ForeignKey(on_delete=models.CASCADE)
 
     count = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
@@ -67,7 +64,7 @@ class Ingredient(models.Model):
 
 class Photo(models.Model):
     photo_id = models.AutoField()
-    step_id = models.ForeignKey(on_delete=CASCADE)
+    step_id = models.ForeignKey(on_delete=models.CASCADE)
 
     path = models.ImageField()
 
