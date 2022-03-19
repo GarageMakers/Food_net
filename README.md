@@ -1,4 +1,6 @@
 # Food_net
-## Requirements
-+ Python 3.8.12
-+ Django 4.0.2
+## Create environment
+(In root directory)
++ pip install virtualenv
++ source env/Scripts/activate
++ pip install -r requirements.txt1
