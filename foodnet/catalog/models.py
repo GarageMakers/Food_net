@@ -1,12 +1,9 @@
-from ast import Delete
-from email.policy import default
-from tkinter import CASCADE
 from django.db import models
 
 
 class User(models.Model):
 
-    user_id = models.AutoField()
+    user_id = models.AutoField(primary_key=True)
 
     name = models.CharField(max_length=30, help_text="Имя Фамилия")
     eMail = models.EmailField()
@@ -18,8 +15,8 @@ class User(models.Model):
 
 
 class Recipe(models.Model):
-    author_id = models.AutoField()
-    user_id = models.ForeignKey(on_delete=models.PROTECT)
+    author_id = models.UUIDField(primary_key=True)
+    user_id = models.ForeignKey('User', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)
     author = models.CharField(max_length=30)
@@ -31,7 +28,7 @@ class Recipe(models.Model):
 
 
 class Comment(models.Model):
-    recept_id = models.ForeignKey(on_delete=CASCADE)
+    recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
     author = models.CharField(max_length=30)
     text_field = models.TextField()
@@ -42,11 +39,11 @@ class Comment(models.Model):
 
 class Step(models.Model):
 
-    step_id = models.AutoField()
-    recept_id = models.ForeignKey(on_delete=CASCADE)
+    step_id = models.UUIDField(primary_key=True)
+    recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
     text_field = models.TextField()
-    photo = models.ImageField()
+    photo_path = models.ImageField()
 
     def __str__(self):
         return self.text_field[:6]
@@ -54,8 +51,8 @@ class Step(models.Model):
 
 class Ingredient(models.Model):
 
-    igr_id = models.AutoField()
-    recept_id = models.ForeignKey(on_delete=CASCADE)
+    igr_id = models.UUIDField(primary_key=True)
+    recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
     count = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
@@ -66,8 +63,8 @@ class Ingredient(models.Model):
 
 
 class Photo(models.Model):
-    photo_id = models.AutoField()
-    step_id = models.ForeignKey(on_delete=CASCADE)
+    photo_id = models.UUIDField(primary_key=True)
+    step_id = models.ForeignKey('Step', on_delete=models.CASCADE)
 
     path = models.ImageField()
 
