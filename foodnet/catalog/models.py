@@ -43,7 +43,7 @@ class Step(models.Model):
     recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
     text_field = models.TextField()
-    photo = models.ImageField()
+    photo_path = models.ImageField()
 
     def __str__(self):
         return self.text_field[:6]
