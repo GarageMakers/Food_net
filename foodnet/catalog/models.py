@@ -9,7 +9,7 @@ class User(models.Model):
     eMail = models.EmailField()
     isBanned = models.BooleanField(default=False)
     password = models.CharField(max_length=20)
-    reg_date = models.DateTimeField(auto_now_add=True)
+    reg_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return self.name
