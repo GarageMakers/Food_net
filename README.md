@@ -1,4 +1,8 @@
 # Food_net
+## Run project
+```
+python manage.py runserver
+```
 ## Create environment
 (In root directory)
 + pip install virtualenv
