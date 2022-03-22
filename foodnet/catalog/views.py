@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 
 def index(response):
-    return HttpResponse("<h1>index<h1>")
+    return render(response, "index.html")
 
 
 def recipe(response):
@@ -13,3 +13,7 @@ def recipe(response):
 
 def account(response):
     return HttpResponse("<h1>account<h1>")
+
+
+def enter(response):
+    return render(response, "enter.html")
