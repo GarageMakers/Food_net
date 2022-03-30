@@ -16,7 +16,7 @@ class User(models.Model):
 
 
 class Recipe(models.Model):
-    author_id = models.UUIDField(primary_key=True)
+    author_id = models.UUIDField(primary_key=True, auto_created=True)
     user_id = models.ForeignKey('User', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)

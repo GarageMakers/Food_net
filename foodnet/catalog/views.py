@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Recipe
 # Create your views here.
 
 
 def index(response):
-    return render(response, "index.html")
+    num_recipe = Recipe.objects.all().count()
+    return render(response, "index.html", context={'num_recipe': num_recipe})
 
 
 def recipe(response):
