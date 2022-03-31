@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 import uuid
 
@@ -17,12 +18,14 @@ class User(models.Model):
 
 
 class Recipe(models.Model):
-    author_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+
+    author_id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4)
     user_id = models.ForeignKey('User', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)
     author = models.CharField(max_length=30)
-    preview = models.ImageField()
+    preview = models.ImageField(default="../images/default.png")
     date = models.DateTimeField()
 
     def __str__(self):
@@ -30,6 +33,7 @@ class Recipe(models.Model):
 
 
 class Comment(models.Model):
+
     recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
     author = models.CharField(max_length=30)
@@ -41,8 +45,8 @@ class Comment(models.Model):
 
 class Step(models.Model):
 
-    step_id = models.UUIDField(primary_key=True)
-    recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
+    recept_id = models.ForeignKey(
+        'Recipe', on_delete=models.CASCADE, null=True)
 
     text_field = models.TextField()
     photo_path = models.ImageField()
@@ -53,8 +57,8 @@ class Step(models.Model):
 
 class Ingredient(models.Model):
 
-    igr_id = models.UUIDField(primary_key=True)
-    recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
+    recept_id = models.ForeignKey(
+        'Recipe', on_delete=models.CASCADE, null=True)
 
     count = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
