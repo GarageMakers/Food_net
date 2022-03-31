@@ -58,16 +58,17 @@ class Ingredient(models.Model):
     count = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
     name = models.CharField(max_length=20)
+    photo = models.ImageField(null=True)
 
     def __str__(self):
         return self.name
 
 
-class Photo(models.Model):
-    photo_id = models.UUIDField(primary_key=True)
-    step_id = models.ForeignKey('Step', on_delete=models.CASCADE)
+# class Photo(models.Model):
+#     photo_id = models.UUIDField(primary_key=True)
+#     step_id = models.ForeignKey('Step', on_delete=models.CASCADE)
 
-    path = models.ImageField()
+#     path = models.ImageField()
 
-    def __str__(self):
-        return self.path
+#     def __str__(self):
+#         return self.path
