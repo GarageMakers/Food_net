@@ -1,6 +1,6 @@
-from email.policy import default
 from django.db import models
 import uuid
+from django.core.validators import EmailValidator
 
 
 class User(models.Model):
@@ -8,7 +8,7 @@ class User(models.Model):
     user_id = models.AutoField(primary_key=True)
 
     name = models.CharField(max_length=30, help_text="Имя Фамилия")
-    eMail = models.EmailField()
+    eMail = models.EmailField(validators=EmailValidator)
     isBanned = models.BooleanField(default=False)
     password = models.CharField(max_length=20)
     reg_date = models.DateTimeField(auto_now_add=True, null=True)
@@ -49,10 +49,10 @@ class Step(models.Model):
         'Recipe', on_delete=models.CASCADE, null=True)
 
     text_field = models.TextField()
-    photo_path = models.ImageField()
+    photo_path = models.ImageField(null=True, default='NULL')
 
     def __str__(self):
-        return self.text_field[:6]
+        return self.text_field[:11]+'...'
 
 
 class Ingredient(models.Model):
@@ -63,7 +63,6 @@ class Ingredient(models.Model):
     count = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
     name = models.CharField(max_length=20)
-    photo = models.ImageField(null=True)
 
     def __str__(self):
         return self.name
