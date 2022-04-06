@@ -74,13 +74,18 @@ class UserList(models.Model):
     owner_id = models.ForeignKey('User', on_delete=models.CASCADE)
     user_id = models.PositiveIntegerField()
 
+    def __str__(self):
+        pass
+
     class Meta:
         abstract = True
 
 
 class FriendList(UserList):
-    pass
+    def __str__(self):
+        return f"Друзья"
 
 
 class BlackList(UserList):
-    pass
+    def __str__(self):
+        return f"Черный список"
