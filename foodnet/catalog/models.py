@@ -1,4 +1,6 @@
 from django.db import models
+import uuid
+from django.core.validators import EmailValidator
 
 
 class User(models.Model):
@@ -6,7 +8,7 @@ class User(models.Model):
     user_id = models.AutoField(primary_key=True)
 
     name = models.CharField(max_length=30, help_text="Имя Фамилия")
-    eMail = models.EmailField()
+    eMail = models.EmailField(validators=[EmailValidator])
     isBanned = models.BooleanField(default=False)
     password = models.CharField(max_length=20)
     reg_date = models.DateTimeField(auto_now_add=True, null=True)
@@ -16,12 +18,14 @@ class User(models.Model):
 
 
 class Recipe(models.Model):
-    author_id = models.UUIDField(primary_key=True)
+
+    author_id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4)
     user_id = models.ForeignKey('User', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)
     author = models.CharField(max_length=30)
-    preview = models.ImageField()
+    preview = models.ImageField(default="../images/default.png")
     date = models.DateTimeField()
 
     def __str__(self):
@@ -29,6 +33,7 @@ class Recipe(models.Model):
 
 
 class Comment(models.Model):
+
     recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
     author = models.CharField(max_length=30)
@@ -40,20 +45,21 @@ class Comment(models.Model):
 
 class Step(models.Model):
 
-    step_id = models.UUIDField(primary_key=True)
-    recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
+    recept_id = models.ForeignKey(
+        'Recipe', on_delete=models.CASCADE, null=True)
 
     text_field = models.TextField()
-    photo_path = models.ImageField()
+    photo_path = models.ImageField(null=True, default='NULL')
+    order = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return self.text_field[:6]
+        return self.text_field[:11]+'...'
 
 
 class Ingredient(models.Model):
 
-    igr_id = models.UUIDField(primary_key=True)
-    recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
+    recept_id = models.ForeignKey(
+        'Recipe', on_delete=models.CASCADE, null=True)
 
     count = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
@@ -63,11 +69,23 @@ class Ingredient(models.Model):
         return self.name
 
 
-class Photo(models.Model):
-    photo_id = models.UUIDField(primary_key=True)
-    step_id = models.ForeignKey('Step', on_delete=models.CASCADE)
+class UserList(models.Model):
 
-    path = models.ImageField()
+    owner_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    user_id = models.PositiveIntegerField()
 
     def __str__(self):
-        return self.path
+        pass
+
+    class Meta:
+        abstract = True
+
+
+class FriendList(UserList):
+    def __str__(self):
+        return f"Друзья"
+
+
+class BlackList(UserList):
+    def __str__(self):
+        return f"Черный список"
