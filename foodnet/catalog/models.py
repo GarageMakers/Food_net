@@ -8,7 +8,7 @@ class User(models.Model):
     user_id = models.AutoField(primary_key=True)
 
     name = models.CharField(max_length=30, help_text="Имя Фамилия")
-    eMail = models.EmailField(validators=EmailValidator)
+    eMail = models.EmailField(validators=[EmailValidator])
     isBanned = models.BooleanField(default=False)
     password = models.CharField(max_length=20)
     reg_date = models.DateTimeField(auto_now_add=True, null=True)
@@ -50,6 +50,7 @@ class Step(models.Model):
 
     text_field = models.TextField()
     photo_path = models.ImageField(null=True, default='NULL')
+    order = models.PositiveSmallIntegerField()
 
     def __str__(self):
         return self.text_field[:11]+'...'
@@ -68,11 +69,18 @@ class Ingredient(models.Model):
         return self.name
 
 
-# class Photo(models.Model):
-#     photo_id = models.UUIDField(primary_key=True)
-#     step_id = models.ForeignKey('Step', on_delete=models.CASCADE)
+class UserList(models.Model):
 
-#     path = models.ImageField()
+    owner_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    user_id = models.PositiveIntegerField()
 
-#     def __str__(self):
-#         return self.path
+    class Meta:
+        abstract = True
+
+
+class FriendList(UserList):
+    pass
+
+
+class BlackList(UserList):
+    pass
