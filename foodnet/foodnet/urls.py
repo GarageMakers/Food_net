@@ -22,5 +22,7 @@ urlpatterns = [
     path('account/', views.account, name='account'),
     path('enter/', views.enter, name='enter'),
     path('', views.base, name='index'),
-    path('top/', views.top, name="top")
+    path('top/', views.top, name="top"),
+    path('register/', views.register, name='register'),
+    path('addRecipe/', views.addRecipe, name="recipe")
 ]

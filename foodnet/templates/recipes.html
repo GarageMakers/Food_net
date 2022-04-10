@@ -1,9 +1,9 @@
 {% extends 'index.html' %}
 
-{% block recipelist %}
+{% block content %}
 <ul>
     {% for recipe in recipes %}
     <li>{{ recipe.name }}</li>
     {% endfor %}
     <ul>
-        {% endblock recipelist %}
+        {% endblock content %}

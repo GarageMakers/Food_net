@@ -1,6 +1,8 @@
+from multiprocessing import context
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Recipe
+from .forms import *
 # Create your views here.
 
 menu = [{"title": "Главная", "url_name": "index"},
@@ -23,3 +25,12 @@ def enter(response):
 
 def top(response):
     return HttpResponse("<h1>top<h1>")
+
+
+def register(response):
+    return render(response, "register.html", context={"title": "Регистрация", "menu": menu})
+
+
+def addRecipe(response):
+    form = AddRecipeForm()
+    return render(response, 'recipe.html', context={"form": form, "title": "Добавить рецепт", "menu": menu})

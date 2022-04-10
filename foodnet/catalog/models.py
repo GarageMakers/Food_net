@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.db import models
 import uuid
 from django.core.validators import EmailValidator
@@ -25,8 +26,8 @@ class Recipe(models.Model):
 
     name = models.CharField(max_length=20)
     author = models.CharField(max_length=30)
-    preview = models.ImageField(default="../images/default.png")
-    date = models.DateTimeField()
+    preview = models.ImageField(upload_to='images')
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

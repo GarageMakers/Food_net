@@ -8,12 +8,15 @@
 
 <body>
     <h1>Welcome to Django!</h1>
-    <form action="enter">
+    <form>
         <input placeholder='email'>
         </input>
         <input placeholder="password">
         </input>
         <button>Вход</button>
+    </form>
+    <form action="{% url 'register' %}">
+        <button>Регистрация</button>
     </form>
 </body>
 
