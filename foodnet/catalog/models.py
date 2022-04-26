@@ -38,7 +38,6 @@ class Comment(models.Model):
 
     recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
-    author = models.CharField(max_length=30)
     text_field = models.TextField()
 
     def __str__(self):
