@@ -19,9 +19,9 @@ class User(models.Model):
 
 class Recipe(models.Model):
 
-    author_id = models.UUIDField(
-        primary_key=True, default=uuid.uuid4)
-    user_id = models.ForeignKey('User', on_delete=models.PROTECT)
+    recipe_id = models.AutoField(primary_key=True)
+
+    creator_id = models.ForeignKey('User', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)
     author = models.CharField(max_length=30)
@@ -33,6 +33,8 @@ class Recipe(models.Model):
 
 
 class Comment(models.Model):
+
+    comment_id = models.AutoField(primary_key=True)
 
     recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
@@ -71,8 +73,8 @@ class Ingredient(models.Model):
 
 class UserList(models.Model):
 
-    owner_id = models.ForeignKey('User', on_delete=models.CASCADE)
-    user_id = models.PositiveIntegerField()
+    owner_id = models.UUIDField(primary_key=True)
+    user_id = models.ForeignKey('User', on_delete=models.PROTECT)
 
     def __str__(self):
         pass
