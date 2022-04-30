@@ -24,7 +24,6 @@ class Recipe(models.Model):
     creator_id = models.ForeignKey('User', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)
-    author = models.CharField(max_length=30)
     preview = models.ImageField(default="../images/default.png")
     date = models.DateTimeField()
 
