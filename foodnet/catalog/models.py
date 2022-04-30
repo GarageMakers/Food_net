@@ -39,6 +39,9 @@ class Comment(models.Model):
 
     text_field = models.TextField()
 
+    def __str__(self):
+        return self.text_field[:11]+'...'
+
 
 class Step(models.Model):
 
