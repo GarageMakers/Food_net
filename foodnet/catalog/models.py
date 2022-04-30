@@ -33,14 +33,11 @@ class Recipe(models.Model):
 
 class Comment(models.Model):
 
-    comment_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
 
     recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
     text_field = models.TextField()
-
-    def __str__(self):
-        return self.name
 
 
 class Step(models.Model):
