@@ -19,8 +19,10 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('recipe/', views.recipe, name="recipe"),
     path('account/', views.account, name='account'),
     path('enter/', views.enter, name='enter'),
-    path('', views.index, name='mainpage')
+    path('', views.base, name='index'),
+    path('top/', views.top, name="top"),
+    path('register/', views.register, name='register'),
+    path('addRecipe/', views.addRecipe, name="recipe")
 ]
