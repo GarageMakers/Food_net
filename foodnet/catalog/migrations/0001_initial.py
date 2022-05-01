@@ -19,7 +19,8 @@ class Migration(migrations.Migration):
                 ('recipe_id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=20)),
                 ('author', models.CharField(max_length=30)),
-                ('preview', models.ImageField(default='../images/default.png', upload_to='')),
+                ('preview', models.ImageField(
+                    default='../images/default.png', upload_to='')),
                 ('date', models.DateTimeField()),
             ],
         ),
@@ -28,7 +29,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('user_id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(help_text='Имя Фамилия', max_length=30)),
-                ('eMail', models.EmailField(max_length=254, validators=[django.core.validators.EmailValidator])),
+                ('eMail', models.EmailField(max_length=254,
+                 validators=[django.core.validators.EmailValidator])),
                 ('isBanned', models.BooleanField(default=False)),
                 ('password', models.CharField(max_length=20)),
                 ('reg_date', models.DateTimeField(auto_now_add=True, null=True)),
@@ -37,51 +39,48 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Step',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('text_field', models.TextField()),
-                ('photo_path', models.ImageField(default='NULL', null=True, upload_to='')),
+                ('photo_path', models.ImageField(
+                    default='NULL', null=True, upload_to='')),
                 ('order', models.PositiveSmallIntegerField()),
-                ('recept_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='catalog.recipe')),
+                ('recept_id', models.ForeignKey(
+                    null=True, on_delete=django.db.models.deletion.CASCADE, to='catalog.recipe')),
             ],
         ),
         migrations.AddField(
             model_name='recipe',
             name='creator_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='catalog.user'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to='catalog.user'),
         ),
         migrations.CreateModel(
             name='Ingredient',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('count', models.CharField(max_length=20)),
                 ('type', models.CharField(max_length=20)),
                 ('name', models.CharField(max_length=20)),
-                ('recept_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='catalog.recipe')),
+                ('recept_id', models.ForeignKey(
+                    null=True, on_delete=django.db.models.deletion.CASCADE, to='catalog.recipe')),
             ],
-        ),
-        migrations.CreateModel(
-            name='FriendList',
-            fields=[
-                ('owner_id', models.UUIDField(primary_key=True, serialize=False)),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='catalog.user')),
-            ],
-            options={
-                'abstract': False,
-            },
         ),
         migrations.CreateModel(
             name='Comment',
             fields=[
-                ('comment_id', models.AutoField(primary_key=True, serialize=False)),
                 ('text_field', models.TextField()),
-                ('recept_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='catalog.recipe')),
+                ('recept_id', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='catalog.recipe')),
             ],
         ),
         migrations.CreateModel(
             name='BlackList',
             fields=[
                 ('owner_id', models.UUIDField(primary_key=True, serialize=False)),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='catalog.user')),
+                ('user_id', models.ForeignKey(
+                    on_delete=django.db.models.deletion.PROTECT, to='catalog.user')),
             ],
             options={
                 'abstract': False,
