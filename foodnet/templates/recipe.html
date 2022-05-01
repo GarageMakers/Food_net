@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+
+<form action="{% url 'recipe' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Добавить</button>
+</form>
+
+{% endblock content %}

@@ -1,4 +1,4 @@
-from pyexpat import model
+from distutils.command.upload import upload
 from django.db import models
 import uuid
 from django.core.validators import EmailValidator

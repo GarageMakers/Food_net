@@ -3,14 +3,24 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Hello Django</title>
+    <title>{{ title }}</title>
 </head>
 
 <body>
-    <h1>Welcome to Django!</h1>
-    <form action="{% url 'enter' %}">
-        <button>Переход по ссылке</button>
+    {% block navigator %}
+    {% for button in menu%}
+
+    <form action={% url button.url_name %}>
+        <button>
+            {{ button.title }}
+        </button>
     </form>
+    {% endfor %}
+    <input type="search"></input>
+    {% endblock navigator %}
+    <h1>{{title}}</h1>
+    {% block content %}
+    {% endblock content %}
 </body>
 
 </html>
