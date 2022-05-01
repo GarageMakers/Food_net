@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 import uuid
 from django.core.validators import EmailValidator
@@ -69,23 +70,12 @@ class Ingredient(models.Model):
         return self.name
 
 
-class UserList(models.Model):
+class FriendList(models.Model):
+    friend_one_id = models.ForeignKey(
+        'User', on_delete=models.PROTECT, related_name='friend_one_set')
+    friend_two_id = models.ForeignKey(
+        'User', on_delete=models.PROTECT, related_name='friend_two_set')
+    friendship = models.BooleanField(default=False)
 
-    owner_id = models.UUIDField(primary_key=True)
-    user_id = models.ForeignKey('User', on_delete=models.PROTECT)
-
-    def __str__(self):
-        pass
-
-    class Meta:
-        abstract = True
-
-
-class FriendList(UserList):
     def __str__(self):
         return f"Друзья"
-
-
-class BlackList(UserList):
-    def __str__(self):
-        return f"Черный список"

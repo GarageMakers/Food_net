@@ -68,17 +68,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='FriendList',
-            fields=[
-                ('owner_id', models.UUIDField(primary_key=True, serialize=False)),
-                ('user_id', models.ForeignKey(
-                    on_delete=django.db.models.deletion.PROTECT, to='catalog.user')),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
             name='Comment',
             fields=[
                 ('text_field', models.TextField()),
