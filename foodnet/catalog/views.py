@@ -32,5 +32,6 @@ def register(response):
 
 
 def addRecipe(response):
-    form = AddRecipeForm()
-    return render(response, 'recipe.html', context={"form": form, "title": "Добавить рецепт", "menu": menu})
+    recipe = AddRecipeForm()
+    step = AddStepForm()
+    return render(response, 'recipe.html', context={"recipeForm": recipe, "title": "Добавить рецепт", "stepForm": step})
