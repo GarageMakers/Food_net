@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-from distutils.command.upload import upload
->>>>>>> c12e4cb5d2e86a65319a144171626722d2bab3f7
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
