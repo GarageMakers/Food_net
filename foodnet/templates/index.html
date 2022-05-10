@@ -16,8 +16,12 @@
         </button>
     </form>
     {% endfor %}
+    {% if request.user.is_autheticated %}
+    <a>Выход</a>
+    {% else %}
+    <a href={% url "login" %}>Вход</a>|<a href={% url "register" %}>Регистрация</a>
+    {% endif %}
     {% endblock navigator %}
-    <h1>{{title}}</h1>
     {% block content %}
     {% endblock content %}
     <h1>{{ num_visits }}</h1>

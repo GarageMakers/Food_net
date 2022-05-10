@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Visitor(models.Model):
@@ -8,8 +10,17 @@ class Visitor(models.Model):
     visitor_id = models.AutoField(primary_key=True)
     isBanned = models.BooleanField(default=False)
 
-    # def __str__(self):
-    #     return self.username
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Visitor.objects.create(user=instance, isBanned=False)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
+
+    def __str__(self):
+        return self.user.get_full_name()
 
 
 class Recipe(models.Model):

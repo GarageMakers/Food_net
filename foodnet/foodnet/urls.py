@@ -19,13 +19,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', views.login, name='login'),
-    path('', views.base, name='index'),
+    path('login/', views.LoginUser.as_view(), name='login'),
+    path('', views.IndexView.as_view(), name='index'),
     path('top/', views.top, name="top"),
-    # path('register/', views.RegisterUser.as_view(), name='register'),
-    path('addRecipe/', views.addRecipe, name="recipe"),
-]
-
-urlpatterns += [
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('register/', views.RegisterUser.as_view(), name='register'),
+    # path('addRecipe/', views.addRecipe, name="recipe"),
+    # path('accounts/', include('django.contrib.auth.urls')),
 ]

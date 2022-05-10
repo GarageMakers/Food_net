@@ -1,23 +1,9 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8" />
-    <title>Hello Django</title>
-</head>
-
-<body>
-    <h1>Welcome to Django!</h1>
-    <form>
-        <input placeholder='email'>
-        </input>
-        <input placeholder="password">
-        </input>
-        <button>Вход</button>
-    </form>
-    <form action="{% url 'register' %}">
-        <button>Регистрация</button>
-    </form>
-</body>
-
-</html>
+{% extends 'index.html' %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type='submit'>Вход</button>
+</form>
+<a href={% url "register" %}>Нет аккаунта?</a>
+{% endblock content %}

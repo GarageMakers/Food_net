@@ -1,6 +1,5 @@
-from dataclasses import fields
 from django import forms
-from .models import Recipe, Step, User
+from .models import Recipe, Step, User, Visitor
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -16,8 +15,8 @@ class AddStepForm(forms.ModelForm):
         fields = '__all__'
 
 
-# class RegisterUserForm(UserCreationForm):
-#     class Meta:
-#         model = User
-#         fields = {"name"}
-#         widgets = {"name": forms.TextInput()}
+class RegisterUserForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = {"last_name", "first_name", "email", "username"}
