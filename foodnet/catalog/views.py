@@ -66,4 +66,4 @@ class LoginUser(DataMixin, LoginView):
         return dict(list(context.items())+list(c_def.items()))
 
     def get_success_url(self) -> str:
-        return reverse_lazy('')
+        return reverse_lazy('index')

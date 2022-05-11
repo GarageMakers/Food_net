@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -15,9 +16,9 @@ class Visitor(models.Model):
         if created:
             Visitor.objects.create(user=instance, isBanned=False)
 
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+    # @receiver(post_save, sender=User)
+    # def save_user_profile(sender, instance, **kwargs):
+    #     instance.visitor.save()
 
     def __str__(self):
         return self.user.get_full_name()
