@@ -55,6 +55,9 @@ ROOT_URLCONF = 'foodnet.urls'
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
+LOGIN_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "index"
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
