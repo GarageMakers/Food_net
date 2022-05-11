@@ -1,28 +1,37 @@
+<<<<<<< HEAD
 from distutils.command.upload import upload
+=======
+>>>>>>> forms
 from django.db import models
-import uuid
-from django.core.validators import EmailValidator
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
-class User(models.Model):
+class Visitor(models.Model):
 
-    user_id = models.AutoField(primary_key=True)
-
-    name = models.CharField(max_length=30, help_text="Имя Фамилия")
-    eMail = models.EmailField(validators=[EmailValidator])
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    visitor_id = models.AutoField(primary_key=True)
     isBanned = models.BooleanField(default=False)
-    password = models.CharField(max_length=20)
-    reg_date = models.DateTimeField(auto_now_add=True, null=True)
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Visitor.objects.create(user=instance, isBanned=False)
+
+    # @receiver(post_save, sender=User)
+    # def save_user_profile(sender, instance, **kwargs):
+    #     instance.visitor.save()
 
     def __str__(self):
-        return self.name
+        return self.user.get_full_name()
 
 
 class Recipe(models.Model):
 
     recipe_id = models.AutoField(primary_key=True)
 
-    creator_id = models.ForeignKey('User', on_delete=models.PROTECT)
+    creator_id = models.ForeignKey('Visitor', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)
     preview = models.ImageField(default="../images/default.png")
@@ -34,7 +43,7 @@ class Recipe(models.Model):
 
 class Comment(models.Model):
 
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    user_id = models.ForeignKey('Visitor', on_delete=models.CASCADE)
 
     recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
@@ -72,9 +81,9 @@ class Ingredient(models.Model):
 
 class FriendList(models.Model):
     friend_one_id = models.ForeignKey(
-        'User', on_delete=models.PROTECT, related_name='friend_one_set')
+        'Visitor', on_delete=models.PROTECT, related_name='friend_one_set')
     friend_two_id = models.ForeignKey(
-        'User', on_delete=models.PROTECT, related_name='friend_two_set')
+        'Visitor', on_delete=models.PROTECT, related_name='friend_two_set')
     friendship = models.BooleanField(default=False)
 
     def __str__(self):

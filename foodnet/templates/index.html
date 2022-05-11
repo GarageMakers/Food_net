@@ -16,11 +16,18 @@
         </button>
     </form>
     {% endfor %}
-    <input type="search"></input>
+    {% if request.user.is_authenticated %}
+    <form action={% url "addRecipe" %}>
+        <button type="sumbit">Создать рецепт</button>
+    </form>
+    <a href={% url "logout" %}>Выход</a>
+    {% else %}
+    <a href={% url "login" %}>Вход</a>|<a href={% url "register" %}>Регистрация</a>
+    {% endif %}
     {% endblock navigator %}
-    <h1>{{title}}</h1>
     {% block content %}
     {% endblock content %}
+    <h1>{{ num_visits }}</h1>
 </body>
 
 </html>

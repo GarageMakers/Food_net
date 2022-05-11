@@ -5,8 +5,12 @@
 
 <form action="{% url 'recipe' %}" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ recipeForm.as_p }}
     <button type="submit">Добавить</button>
+</form>
+<form action="{% url 'recipe' %}" method="post">
+    {% csrf_token %}
+    {{ stepForm.as_p }}
 </form>
 
 {% endblock content %}
