@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 from distutils.command.upload import upload
-=======
->>>>>>> forms
->>>>>>> f2f57936a009cd2f8c44476437a71364c0d70a4a
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
