@@ -4,12 +4,19 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import inlineformset_factory
 
 
-CompanyFormSet = inlineformset_factory(Recipe, Step, fields='__all__')
+RecipeStepFormSet = inlineformset_factory(
+    Recipe, Step, extra=0, min_num=1, fields=('text_field', 'photo_path'))
 
 
 class AddRecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
+        fields = '__all__'
+
+
+class AddStepForm(forms.ModelForm):
+    class Meta:
+        model = Step
         fields = '__all__'
 
 

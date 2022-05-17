@@ -54,7 +54,7 @@ class Step(models.Model):
     recept_id = models.ForeignKey(
         'Recipe', on_delete=models.CASCADE, null=True)
 
-    text_field = models.TextField()
+    text_field = models.TextField(max_length=300)
     photo_path = models.ImageField(null=True, default='NULL')
     order = models.PositiveSmallIntegerField()
 

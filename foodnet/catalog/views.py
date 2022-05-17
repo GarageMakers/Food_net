@@ -1,5 +1,7 @@
 from urllib import request
-from django.shortcuts import render
+from winreg import REG_WHOLE_HIVE_VOLATILE
+from django.forms import formset_factory
+from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 
@@ -70,49 +72,64 @@ class LoginUser(DataMixin, LoginView):
         return reverse_lazy('index')
 
 
-class AddRecipe(DataMixin, CreateView):
-    model = Recipe
-    form_class = AddRecipeForm
-    template_name = "addRecipe.html"
-    # success_url = reverse_lazy('accounts')
+class FormsetMixin():
+    object = None
 
-    def get(self, request, object=None, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        if getattr(self, 'is_update_view', False):
+            self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        recipe_form = AddRecipe
-        return self.render_to_response(self.get_context_data(form=form, recipe_form=recipe_form))
+        formset_class = self.get_formset_class()
+        formset = self.get_formset(formset_class)
+        return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
-    def post(self, request, object=None, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+        if getattr(self, 'is_update_view', False):
+            self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        recipe_form = AddRecipe(self.request.POST)
-        if (form.is_valid() and recipe_form.is_valid()):
-            return super(AddRecipe, self).form_valid(form, recipe_form)
+        formset_class = self.get_formset_class()
+        formset = self.get_formset(formset_class)
+        if form.is_valid() and formset.is_valid():
+            return self.form_valid(form, formset)
         else:
-            return self.form_invalid(form, recipe_form)
+            return self.form_invalid(form, formset)
 
-    def form_valid(self, form, recipe_form):
-        """
-        Called if all forms are valid. Creates a Recipe instance along with
-        associated Ingredients and Instructions and then redirects to a
-        success page.
-        """
+    def get_formset_class(self):
+        return self.formset_class
+
+    def get_formset(self, formset_class):
+        return formset_class(**self.get_formset_kwargs())
+
+    def get_formset_kwargs(self):
+        kwargs = {
+            'instance': self.object
+        }
+        if self.request.method in ('POST', 'PUT'):
+            kwargs.update({
+                'data': self.request.POST,
+                'files': self.request.FILES,
+            })
+        return kwargs
+
+    def form_valid(self, form, formset):
         self.object = form.save()
-        recipe_form.instance = self.object
-        recipe_form.instance.user = self.request.user
-        recipe_form.save()
-        return HttpResponseRedirect(self.get_success_url())
+        formset.instance = self.object
+        formset.save()
+        return redirect(self.object.get_absolute_url())
 
-    def form_invalid(self, form, recipe_form):
-        """
-        Called if a form is invalid. Re-renders the context data with the
-        data-filled forms and errors.
-        """
-        return self.render_to_response(
-            self.get_context_data(form=form,
-                                  recipe_form=recipe_form))
+    def form_invalid(self, form, formset):
+        return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+
+class AddRecipe(FormsetMixin, DataMixin, CreateView):
+    model = Recipe
+    template_name = 'addRecipe.html'
+    form_class = AddRecipeForm
+    formset_class = RecipeStepFormSet
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить рецепт")
+        c_def = self.get_user_context(title="Создание рецепта")
         return dict(list(context.items())+list(c_def.items()))

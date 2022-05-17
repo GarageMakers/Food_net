@@ -1,1 +1,12 @@
 {% extends 'index.html' %}
+{% block content %}
+<form method="post">
+    {{ formset.management_form }}
+    <table>
+        {% for form in formset %}
+        {{ form }}
+        {% endfor %}
+    </table>
+    <button type='submit'>Создать рецепт</button>
+</form>
+{% endblock content %}
