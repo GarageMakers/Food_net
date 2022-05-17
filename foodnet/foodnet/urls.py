@@ -24,7 +24,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('top/', views.top, name="top"),
     path('accounts/register/', views.RegisterUser.as_view(), name='register'),
-    path('addRecipe/', views.silence, name="addRecipe"),
+    path('addRecipe/', views.AddRecipe.as_view(), name="addRecipe"),
 ]
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),

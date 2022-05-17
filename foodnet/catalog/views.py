@@ -1,5 +1,6 @@
+from urllib import request
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 
 from .utils import DataMixin
@@ -67,3 +68,51 @@ class LoginUser(DataMixin, LoginView):
 
     def get_success_url(self) -> str:
         return reverse_lazy('index')
+
+
+class AddRecipe(DataMixin, CreateView):
+    model = Recipe
+    form_class = AddRecipeForm
+    template_name = "addRecipe.html"
+    # success_url = reverse_lazy('accounts')
+
+    def get(self, request, object=None, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        recipe_form = AddRecipe
+        return self.render_to_response(self.get_context_data(form=form, recipe_form=recipe_form))
+
+    def post(self, request, object=None, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        recipe_form = AddRecipe(self.request.POST)
+        if (form.is_valid() and recipe_form.is_valid()):
+            return super(AddRecipe, self).form_valid(form, recipe_form)
+        else:
+            return self.form_invalid(form, recipe_form)
+
+    def form_valid(self, form, recipe_form):
+        """
+        Called if all forms are valid. Creates a Recipe instance along with
+        associated Ingredients and Instructions and then redirects to a
+        success page.
+        """
+        self.object = form.save()
+        recipe_form.instance = self.object
+        recipe_form.instance.user = self.request.user
+        recipe_form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, recipe_form):
+        """
+        Called if a form is invalid. Re-renders the context data with the
+        data-filled forms and errors.
+        """
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  recipe_form=recipe_form))
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить рецепт")
+        return dict(list(context.items())+list(c_def.items()))
