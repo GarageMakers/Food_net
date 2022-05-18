@@ -30,8 +30,8 @@ class Recipe(models.Model):
     creator_id = models.ForeignKey('Visitor', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)
-    preview = models.ImageField(default="../images/default.png")
-    date = models.DateTimeField()
+    preview = models.ImageField(upload_to='../images')
+    date = models.DateTimeField(auto_created=True)
 
     def __str__(self):
         return self.name

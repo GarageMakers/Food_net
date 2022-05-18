@@ -1,5 +1,3 @@
-from urllib import request
-from winreg import REG_WHOLE_HIVE_VOLATILE
 from django.forms import formset_factory
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -51,12 +49,15 @@ class IndexView(DataMixin, ListView):
 class RegisterUser(DataMixin, CreateView):
     form_class = RegisterUserForm
     template_name = "register.html"
-    success_url = reverse_lazy('accounts')
+    success_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Регистрация")
         return dict(list(context.items())+list(c_def.items()))
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('login')
 
 
 class LoginUser(DataMixin, LoginView):
