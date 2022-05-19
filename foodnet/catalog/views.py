@@ -56,8 +56,8 @@ class RegisterUser(DataMixin, CreateView):
         c_def = self.get_user_context(title="Регистрация")
         return dict(list(context.items())+list(c_def.items()))
 
-    def get_success_url(self) -> str:
-        return reverse_lazy('login')
+    # def get_success_url(self) -> str:
+    #     return reverse_lazy('login')
 
 
 class LoginUser(DataMixin, LoginView):
