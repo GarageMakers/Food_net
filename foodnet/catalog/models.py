@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -27,14 +28,24 @@ class Recipe(models.Model):
 
     recipe_id = models.AutoField(primary_key=True)
 
-    creator_id = models.ForeignKey('Visitor', on_delete=models.PROTECT)
+    creator = models.ForeignKey(
+        'Visitor', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)
-    preview = models.ImageField(upload_to='../images')
-    date = models.DateTimeField(auto_created=True)
+    preview = models.ImageField(
+        upload_to='images/%Y/%m/%d')
+    date = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.creator_id:
+            self.creator = User.objects.get
+        super(Recipe, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return 'index'
 
 
 class Comment(models.Model):
@@ -56,7 +67,7 @@ class Step(models.Model):
 
     text_field = models.TextField(max_length=300)
     photo_path = models.ImageField(null=True, default='NULL')
-    order = models.PositiveSmallIntegerField()
+    order = models.PositiveSmallIntegerField(default=1)  # переделать
 
     def __str__(self):
         return self.text_field[:11]+'...'
