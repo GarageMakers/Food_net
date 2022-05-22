@@ -1,3 +1,4 @@
+from urllib import request
 from django.forms import formset_factory
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -134,3 +135,10 @@ class AddRecipe(FormsetMixin, DataMixin, CreateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Создание рецепта")
         return dict(list(context.items())+list(c_def.items()))
+
+    def form_valid(self, form, formset):
+        form.instance.creator = self.request.user.visitor
+        self.object = form.save()
+        formset.instance = self.object
+        formset.save()
+        return redirect(self.object.get_absolute_url())

@@ -7,7 +7,8 @@ from django.dispatch import receiver
 
 class Visitor(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE)
     visitor_id = models.AutoField(primary_key=True)
     isBanned = models.BooleanField(default=False)
 
@@ -35,11 +36,6 @@ class Recipe(models.Model):
     preview = models.ImageField(
         upload_to='images/%Y/%m/%d')
     date = models.DateTimeField(auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        if not self.creator_id:
-            self.creator = User.objects.get
-        super(Recipe, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
