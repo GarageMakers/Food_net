@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 from distutils.command.upload import upload
-=======
-
->>>>>>> 39d2d6dc2ef76ac97e11ee0ede483f922f9e4ce7
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -38,13 +34,8 @@ class Recipe(models.Model):
 
     name = models.CharField(max_length=20)
     preview = models.ImageField(
-<<<<<<< HEAD
         null=True, upload_to='uploads/%Y/%m/%d/', default='NULL')
     date = models.DateTimeField(auto_created=True)
-=======
-        upload_to='images/%Y/%m/%d')
-    date = models.DateTimeField(auto_now_add=True)
->>>>>>> 39d2d6dc2ef76ac97e11ee0ede483f922f9e4ce7
 
     def __str__(self):
         return self.name
