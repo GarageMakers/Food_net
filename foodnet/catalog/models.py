@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from distutils.command.upload import upload
+=======
+
+>>>>>>> 39d2d6dc2ef76ac97e11ee0ede483f922f9e4ce7
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -7,7 +11,8 @@ from django.dispatch import receiver
 
 class Visitor(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE)
     visitor_id = models.AutoField(primary_key=True)
     isBanned = models.BooleanField(default=False)
 
@@ -28,15 +33,24 @@ class Recipe(models.Model):
 
     recipe_id = models.AutoField(primary_key=True)
 
-    creator_id = models.ForeignKey('Visitor', on_delete=models.PROTECT)
+    creator = models.ForeignKey(
+        'Visitor', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)
     preview = models.ImageField(
+<<<<<<< HEAD
         null=True, upload_to='uploads/%Y/%m/%d/', default='NULL')
     date = models.DateTimeField(auto_created=True)
+=======
+        upload_to='images/%Y/%m/%d')
+    date = models.DateTimeField(auto_now_add=True)
+>>>>>>> 39d2d6dc2ef76ac97e11ee0ede483f922f9e4ce7
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return 'index'
 
 
 class Comment(models.Model):
@@ -58,7 +72,7 @@ class Step(models.Model):
 
     text_field = models.TextField(max_length=300)
     photo_path = models.ImageField(null=True, default='NULL')
-    order = models.PositiveSmallIntegerField()
+    order = models.PositiveSmallIntegerField(default=1)  # переделать
 
     def __str__(self):
         return self.text_field[:11]+'...'
