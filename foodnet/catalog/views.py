@@ -20,15 +20,15 @@ menu = [{"title": "Главная", "url_name": "index"},
         {'title': "Вход/Регистрация", "url_name": "register"}]
 
 
-def base(response):
-    recipes = Recipe.objects.all()
-    num_visits = response.session.get('num_visits', 0)
-    response.session['num_visits'] = num_visits+1
-    return render(response, "recipes.html", context={'menu': menu, "recipes": recipes, "num_visits": num_visits})
+# def base(response):
+#     recipes = Recipe.objects.all()
+#     num_visits = response.session.get('num_visits', 0)
+#     response.session['num_visits'] = num_visits+1
+#     return render(response, "recipes.html", context={'menu': menu, "recipes": recipes, "num_visits": num_visits})
 
 
 def top(response):
-    return HttpResponse("<h1>top<h1>")
+    return HttpResponse("<h1>silence<h1>")
 
 
 def silence(response):
@@ -124,7 +124,7 @@ class FormsetMixin():
         return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
-class AddRecipe(FormsetMixin, DataMixin, CreateView):
+class AddRecipe(FormsetMixin, CreateView, DataMixin):
     model = Recipe
     template_name = 'addRecipe.html'
     form_class = AddRecipeForm
