@@ -1,10 +1,10 @@
 {% extends 'index.html' %}
 {% block content %}
-<form method="post">
-    {{ formset.management_form }}
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
-    <table>
+    {{ formset.management_form }}
+    <table id="form-container">
         {% for form in formset %}
         <div class="step_form">
             {{ form.as_p }}
