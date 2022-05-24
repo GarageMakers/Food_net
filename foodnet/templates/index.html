@@ -13,6 +13,7 @@
     <div class="d-flex flex-row">
         {% for button in menu%}
 
+<<<<<<< HEAD
         <form action={% url button.url_name %}>
             <button>
                 {{ button.title }}
@@ -22,13 +23,32 @@
     </div>
     {% if request.user.is_autheticated %}
     <a>Выход</a>
+=======
+    <form action={% url button.url_name %}>
+        <button>
+            {{ button.title }}
+        </button>
+    </form>
+    {% endfor %}
+    {% if request.user.is_authenticated %}
+    <form action={% url "addRecipe" %}>
+        <button type="sumbit">Создать рецепт</button>
+    </form>
+    <h3>{{user.get_full_name}}</h3>
+    <a href={% url "logout" %}>Выход</a>
+>>>>>>> 01d408a64036551acad91cee8fc26c7513c1cfb1
     {% else %}
     <a href={% url "login" %}>Вход</a>|<a href={% url "register" %}>Регистрация</a>
     {% endif %}
-    {% endblock navigator %}
-    {% block content %}
-    {% endblock content %}
-    <h1>{{ num_visits }}</h1>
+    <ul>
+        {% for recipe in recipes %}
+        <li>{{ recipe.name }}</li>
+        {% endfor %}
+        <ul>
+            {% endblock navigator %}
+            {% block content %}
+            {% endblock content %}
+            <h1>{{ num_visits }}</h1>
 </body>
 
 </html>

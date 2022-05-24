@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -6,7 +7,8 @@ from django.dispatch import receiver
 
 class Visitor(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE)
     visitor_id = models.AutoField(primary_key=True)
     isBanned = models.BooleanField(default=False)
 
@@ -15,9 +17,9 @@ class Visitor(models.Model):
         if created:
             Visitor.objects.create(user=instance, isBanned=False)
 
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+    # @receiver(post_save, sender=User)
+    # def save_user_profile(sender, instance, **kwargs):
+    #     instance.visitor.save()
 
     def __str__(self):
         return self.user.get_full_name()
@@ -27,14 +29,19 @@ class Recipe(models.Model):
 
     recipe_id = models.AutoField(primary_key=True)
 
-    creator_id = models.ForeignKey('Visitor', on_delete=models.PROTECT)
+    creator = models.ForeignKey(
+        'Visitor', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=20)
-    preview = models.ImageField(default="../images/default.png")
-    date = models.DateTimeField()
+    preview = models.ImageField(
+        null=True, upload_to='uploads/%Y/%m/%d/', default='NULL')
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return 'index'
 
 
 class Comment(models.Model):
@@ -54,9 +61,9 @@ class Step(models.Model):
     recept_id = models.ForeignKey(
         'Recipe', on_delete=models.CASCADE, null=True)
 
-    text_field = models.TextField()
+    text_field = models.TextField(max_length=300)
     photo_path = models.ImageField(null=True, default='NULL')
-    order = models.PositiveSmallIntegerField()
+    order = models.PositiveSmallIntegerField(default=1)  # переделать
 
     def __str__(self):
         return self.text_field[:11]+'...'

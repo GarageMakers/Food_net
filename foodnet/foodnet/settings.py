@@ -55,6 +55,9 @@ ROOT_URLCONF = 'foodnet.urls'
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
+LOGIN_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "index"
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -125,3 +128,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_ROOT = MEDIA_ROOT = os.path.join(BASE_DIR)

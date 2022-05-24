@@ -16,13 +16,17 @@ Including another URLconf
 from catalog import views
 from django.contrib import admin
 from django.urls import path, include
-
+from django.views.generic.base import TemplateView
+# from django.contrib.auth.urls
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', views.LoginUser.as_view(), name='login'),
+    path('accounts/login/', views.LoginUser.as_view(), name='login'),
     path('', views.IndexView.as_view(), name='index'),
     path('top/', views.top, name="top"),
-    path('register/', views.RegisterUser.as_view(), name='register'),
-    # path('addRecipe/', views.addRecipe, name="recipe"),
-    # path('accounts/', include('django.contrib.auth.urls')),
+    path('addRecipe/', views.AddRecipe.as_view(), name="addRecipe"),
+    path('accounts/register/', views.RegisterUser.as_view(), name='register'),
+
+]
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
