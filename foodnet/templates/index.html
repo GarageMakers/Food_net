@@ -25,13 +25,13 @@
     {% else %}
     <a href={% url "login" %}>Вход</a>|<a href={% url "register" %}>Регистрация</a>
     {% endif %}
+    {% endblock navigator %}
+    {% block content %}
     <ul>
         {% for recipe in recipes %}
         <li>{{ recipe.name }}</li>
         {% endfor %}
         <ul>
-            {% endblock navigator %}
-            {% block content %}
             {% endblock content %}
             <h1>{{ num_visits }}</h1>
 </body>
