@@ -5,7 +5,7 @@ from django.forms import inlineformset_factory
 
 
 RecipeStepFormSet = inlineformset_factory(
-    Recipe, Step, extra=0, min_num=1, fields=('text_field', 'photo_path'), can_delete=False)
+    Recipe, Step,  fields=('text_field', 'photo_path'), extra=1, can_delete=False)
 
 
 class AddRecipeForm(forms.ModelForm):

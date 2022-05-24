@@ -1,7 +1,5 @@
-from urllib import request
-from django.forms import formset_factory
-from django.shortcuts import redirect, render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 
 from .utils import DataMixin
