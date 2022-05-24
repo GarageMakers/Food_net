@@ -23,11 +23,15 @@
         <form action={% url "addRecipe" %}>
             <button type="sumbit">Создать рецепт</button>
         </form>
+<<<<<<< HEAD
         <h3>{{user.get_full_name}}</h3>
+=======
+>>>>>>> 1437e46f787ed308afb8c90728a7ccceadc39f49
         <a href={% url "logout" %}>Выход</a>
         {% else %}
         <a href={% url "login" %}>Вход</a>|<a href={% url "register" %}>Регистрация</a>
         {% endif %}
+<<<<<<< HEAD
         <ul>
             {% for recipe in recipes %}
             <li>{{ recipe.name }}</li>
@@ -37,6 +41,12 @@
                 {% block content %}
                 {% endblock content %}
                 <h1>{{ num_visits }}</h1>
+=======
+        {% endblock navigator %}
+        {% block content %}
+        {% endblock content %}
+        <h1>{{ num_visits }}</h1>
+>>>>>>> 1437e46f787ed308afb8c90728a7ccceadc39f49
 </body>
 
 </html>
