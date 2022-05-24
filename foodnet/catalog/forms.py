@@ -1,12 +1,18 @@
 from django import forms
-from .models import Recipe, Step, User, Visitor
+from .models import *
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import inlineformset_factory
+
+
+RecipeStepFormSet = inlineformset_factory(
+    Recipe, Step,  fields=('text_field', 'photo_path'), extra=1, can_delete=False)
 
 
 class AddRecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
         fields = '__all__'
+        exclude = ['date', "creator"]
 
 
 class AddStepForm(forms.ModelForm):
