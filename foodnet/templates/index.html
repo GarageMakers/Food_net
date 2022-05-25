@@ -59,12 +59,12 @@
         </div>
     </nav>
     {% endblock navigator %}
+    {% block content %}
     <ul>
         {% for recipe in recipes %}
         <li>{{ recipe.name }}</li>
         {% endfor %}
         <ul>
-            {% block content %}
             {% endblock content %}
 
 </body>

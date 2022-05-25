@@ -1,6 +1,7 @@
 from django import forms
 from .models import *
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+
 from django.forms import inlineformset_factory
 
 
@@ -26,3 +27,10 @@ class RegisterUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = {"last_name", "first_name", "email", "username"}
+
+
+class LoginUserForm(AuthenticationForm):
+    username = forms.CharField(label='Логин', widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(
+        attrs={'class': 'form-control'}))
