@@ -23,10 +23,24 @@ class AddStepForm(forms.ModelForm):
 
 
 class RegisterUserForm(UserCreationForm):
+    username = forms.CharField(
+        label="Логин", widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.CharField(label='Адрес электронной почты', widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
+    first_name = forms.CharField(label='Имя', widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
+    last_name = forms.CharField(label='Фамилия', widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
+    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(
+        attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput(
+        attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
         fields = {"last_name", "first_name", "email", "username"}
+        field_order = ['username', 'email', 'password1',
+                       'password2', 'first_name', 'last_name']
 
 
 class LoginUserForm(AuthenticationForm):

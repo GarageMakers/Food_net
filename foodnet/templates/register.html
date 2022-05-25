@@ -1,8 +1,16 @@
 {% extends 'index.html' %}
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Регистрация</button>
-</form>
+<div class='d-flex justify-content-center'>
+    <div class="shadow-lg p-3 mb-5 bg-body rounded mt-5" style="width: 30%;">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class='d-flex'>
+                <div class='ms-auto'>
+                    <button type="submit">Регистрация</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock content %}
