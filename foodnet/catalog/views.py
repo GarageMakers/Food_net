@@ -140,3 +140,8 @@ class AddRecipe(FormsetMixin, CreateView, DataMixin):
         formset.instance = self.object
         formset.save()
         return redirect(self.object.get_absolute_url())
+
+
+# Test view
+
+# Test view

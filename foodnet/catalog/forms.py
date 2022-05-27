@@ -1,11 +1,11 @@
 from django import forms
 from .models import *
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, modelformset_factory
 
 
 RecipeStepFormSet = inlineformset_factory(
-    Recipe, Step,  fields=('text_field', 'photo_path'), extra=1, can_delete=False)
+    Recipe, Step,  fields=('order', 'text_field', 'photo_path'), extra=1, can_delete=False)
 
 
 class AddRecipeForm(forms.ModelForm):
