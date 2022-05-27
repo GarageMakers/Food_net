@@ -1,7 +1,7 @@
 from django import forms
 from .models import *
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import inlineformset_factory, modelformset_factory
+from django.forms import inlineformset_factory
 
 
 RecipeStepFormSet = inlineformset_factory(
