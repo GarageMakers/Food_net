@@ -18,7 +18,7 @@
     let birdForm = document.querySelectorAll(".step_form")
     let container = document.querySelector("#form-container").parentNode
     let addButton = document.querySelector("#add-form")
-    let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+    let totalForms = document.querySelector("#id_step_set-TOTAL_FORMS")
 
     let formNum = 0
     addButton.addEventListener('click', addForm)
@@ -27,13 +27,12 @@
         e.preventDefault()
 
         let newForm = birdForm[0].cloneNode(true)
-        let formRegex = RegExp(`form-(\\d){1}-`, 'g')
-
+        let formRegex = RegExp(`step_set-(\\d){1}-`, 'g')
         formNum++
-        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `step_set-${formNum}-`)
         container.insertBefore(newForm, addButton)
 
-        totalForms.setAttribute('value', `${formNum + 1}`)
+        totalForms.setAttribute('value', `${formNum + 1}`) //Increment the number of total forms in the management form
     }
 </script>
 {% endblock content %}
