@@ -5,25 +5,17 @@ from django.urls import reverse_lazy
 from .utils import DataMixin
 from .models import Recipe
 from .forms import *
-# Авторизация
+
 from django.contrib.auth.forms import AuthenticationForm
-# Выход
+
 from django.contrib.auth.views import LoginView
 
 
 from django.views.generic import CreateView, ListView
-# Create your views here.
 
 menu = [{"title": "Главная", "url_name": "index"},
         {"title": "Топ 100", "url_name": "top"},
         {'title': "Вход/Регистрация", "url_name": "register"}]
-
-
-# def base(response):
-#     recipes = Recipe.objects.all()
-#     num_visits = response.session.get('num_visits', 0)
-#     response.session['num_visits'] = num_visits+1
-#     return render(response, "recipes.html", context={'menu': menu, "recipes": recipes, "num_visits": num_visits})
 
 
 def top(response):
