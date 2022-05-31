@@ -34,7 +34,7 @@ class Recipe(models.Model):
 
     name = models.CharField(max_length=20)
     preview = models.ImageField(
-        null=True, upload_to='uploads/%Y/%m/%d/', default='NULL')
+        null=True, upload_to='uploads/previews/%Y/%m/%d/', default='NULL')
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -62,7 +62,8 @@ class Step(models.Model):
         'Recipe', on_delete=models.CASCADE, null=True)
 
     text_field = models.TextField(max_length=300)
-    photo_path = models.ImageField(null=True, default='NULL')
+    photo_path = models.ImageField(
+        null=True, upload_to='uploads/steps/%Y/%m/%d/', default='NULL')
     order = models.PositiveSmallIntegerField(default=1)  # переделать
 
     def __str__(self):

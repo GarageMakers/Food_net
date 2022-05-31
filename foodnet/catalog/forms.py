@@ -6,10 +6,20 @@ from django.forms import inlineformset_factory
 
 
 RecipeStepFormSet = inlineformset_factory(
-    Recipe, Step,  fields=('order', 'text_field', 'photo_path'), extra=1, can_delete=False)
+    Recipe, Step, fields=("order", "text_field", "photo_path"), extra=1, can_delete=False,
+    labels={'order': "Номер шага",
+            "text_field": "Текст шага", "photo_path": "Фото"},
+    widgets={'order': forms.NumberInput(attrs={"class": "form-control"}),
+             "text_field": forms.Textarea(attrs={"class": "form-control"}),
+             "photo_path": forms.FileInput(attrs={"class": "form-control"})})
 
 
 class AddRecipeForm(forms.ModelForm):
+    name = forms.CharField(label="Имя рецепта", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
+    preview = forms.CharField(label='Preview', widget=forms.FileInput(
+        attrs={"class": "form-control"}))
+
     class Meta:
         model = Recipe
         fields = '__all__'
@@ -17,6 +27,7 @@ class AddRecipeForm(forms.ModelForm):
 
 
 class AddStepForm(forms.ModelForm):
+
     class Meta:
         model = Step
         fields = '__all__'
