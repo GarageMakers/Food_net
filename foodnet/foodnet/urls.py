@@ -16,7 +16,8 @@ Including another URLconf
 from catalog import views
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
+from django.conf.urls.static import static
+from django.conf import settings
 # from django.contrib.auth.urls
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,8 +26,10 @@ urlpatterns = [
     path('top/', views.top, name="top"),
     path('addRecipe/', views.AddRecipe.as_view(), name="addRecipe"),
     path('accounts/register/', views.RegisterUser.as_view(), name='register'),
+    path('recipeList/', views.VisitorRecipesView.as_view(), name="recipeList")
 
 ]
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
-]
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
