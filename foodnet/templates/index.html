@@ -20,18 +20,22 @@
     <form action={% url "addRecipe" %}>
         <button type="sumbit">Создать рецепт</button>
     </form>
+    <form action={% url "recipeList" %}>
+        <button type="sumbit">Мои рецепты</button>
+    </form>
     <h3>{{user.get_full_name}}</h3>
     <a href={% url "logout" %}>Выход</a>
     {% else %}
     <a href={% url "login" %}>Вход</a>|<a href={% url "register" %}>Регистрация</a>
     {% endif %}
+    {% endblock navigator %}
+    {% block content %}
     <ul>
         {% for recipe in recipes %}
         <li>{{ recipe.name }}</li>
+        <img class="img-fluid" src={{ recipe.preview.url }}>
         {% endfor %}
         <ul>
-            {% endblock navigator %}
-            {% block content %}
             {% endblock content %}
             <h1>{{ num_visits }}</h1>
 </body>
