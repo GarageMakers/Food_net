@@ -1,6 +1,6 @@
-from distutils.command.upload import upload
-from django.db import models
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -20,6 +20,9 @@ class Visitor(models.Model):
     # @receiver(post_save, sender=User)
     # def save_user_profile(sender, instance, **kwargs):
     #     instance.visitor.save()
+    @login_required
+    def my_recipes(request):
+        return Recipe.objects.filter(visitor__user=request.user)
 
     def __str__(self):
         return self.user.get_full_name()
@@ -34,8 +37,13 @@ class Recipe(models.Model):
 
     name = models.CharField(max_length=20)
     preview = models.ImageField(
-        null=True, upload_to='uploads/%Y/%m/%d/', default='NULL')
+        null=True, upload_to='previews/uploads/%Y/%m/%d/')
     date = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def photo_url(self):
+        if self.preview and hasattr(self.preview, 'url'):
+            return self.preview.url
 
     def __str__(self):
         return self.name
@@ -62,7 +70,8 @@ class Step(models.Model):
         'Recipe', on_delete=models.CASCADE, null=True)
 
     text_field = models.TextField(max_length=300)
-    photo_path = models.ImageField(null=True, default='NULL')
+    photo_path = models.ImageField(
+        null=True, upload_to='steps/uploads/%Y/%m/%d/')
     order = models.PositiveSmallIntegerField(default=1)  # переделать
 
     def __str__(self):

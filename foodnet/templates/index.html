@@ -20,6 +20,9 @@
     <form action={% url "addRecipe" %}>
         <button type="sumbit">Создать рецепт</button>
     </form>
+    <form action={% url "recipeList" %}>
+        <button type="sumbit">Мои рецепты</button>
+    </form>
     <h3>{{user.get_full_name}}</h3>
     <a href={% url "logout" %}>Выход</a>
     {% else %}
@@ -30,6 +33,7 @@
     <ul>
         {% for recipe in recipes %}
         <li>{{ recipe.name }}</li>
+        <img class="img-fluid" src={{ recipe.preview.url }}>
         {% endfor %}
         <ul>
             {% endblock content %}
