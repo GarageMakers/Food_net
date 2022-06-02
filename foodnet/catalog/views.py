@@ -1,5 +1,4 @@
-from pipes import Template
-from telnetlib import Telnet
+
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.http import Http404, HttpResponse
