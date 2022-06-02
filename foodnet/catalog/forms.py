@@ -17,8 +17,6 @@ RecipeStepFormSet = inlineformset_factory(
 class AddRecipeForm(forms.ModelForm):
     name = forms.CharField(label="Имя рецепта", widget=forms.TextInput(
         attrs={'class': "form-control"}))
-    preview = forms.CharField(label='Preview', widget=forms.FileInput(
-        attrs={"class": "form-control"}))
 
     class Meta:
         model = Recipe
