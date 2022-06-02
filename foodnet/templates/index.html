@@ -43,6 +43,7 @@
                         <i class="bi bi-person-circle"></i>
                     </a>
 
+<<<<<<< HEAD
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li><a class="dropdown-item" href={% url "logout" %}>Выход</a></li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -58,11 +59,32 @@
             </div>
         </div>
     </nav>
+=======
+    <form action={% url button.url_name %}>
+        <button>
+            {{ button.title }}
+        </button>
+    </form>
+    {% endfor %}
+    {% if request.user.is_authenticated %}
+    <form action={% url "addRecipe" %}>
+        <button type="sumbit">Создать рецепт</button>
+    </form>
+    <form action={% url "recipeList" %}>
+        <button type="sumbit">Мои рецепты</button>
+    </form>
+    <h3>{{user.get_full_name}}</h3>
+    <a href={% url "logout" %}>Выход</a>
+    {% else %}
+    <a href={% url "login" %}>Вход</a>|<a href={% url "register" %}>Регистрация</a>
+    {% endif %}
+>>>>>>> main
     {% endblock navigator %}
     {% block content %}
     <ul>
         {% for recipe in recipes %}
         <li>{{ recipe.name }}</li>
+        <img class="img-fluid" src={{ recipe.preview.url }}>
         {% endfor %}
         <ul>
             {% endblock content %}
