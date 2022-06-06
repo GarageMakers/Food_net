@@ -1,6 +1,4 @@
 {% extends 'index.html' %}
-
-
 {% block content %}
-{{recipe.name}}
+    {% for step in steps %}{{ step }}{% endfor %}
 {% endblock content %}

@@ -19,10 +19,6 @@ def silence(response):
     return HttpResponse("<h1>silence<h1>")
 
 
-def recipe(response, recipe_id):
-    return recipe_id
-
-
 class IndexView(DataMixin, ListView):
     model = Recipe
     template_name = "index.html"
@@ -34,9 +30,15 @@ class IndexView(DataMixin, ListView):
         return dict(list(context.items())+list(c_def.items()))
 
 
-class RecipeDetail(DataMixin, DetailView):
+class RecipeDetail(DetailView, DataMixin):
     model = Recipe
     template_name = 'recipe.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Foodnet")
+        context["steps"] = self.get_object().step_set.all()
+        return dict(list(context.items())+list(c_def.items()))
 
 
 class VisitorRecipesView(DataMixin, ListView):
