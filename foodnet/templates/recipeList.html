@@ -1,6 +1,4 @@
 {% extends 'index.html' %}
 {% block content %}
-{% for recipe in visitor_recipes%}
-{{recipe.name}}
-{% endfor %}
-{% endblock content%}
+    {% for recipe in visitor_recipes %}{{ recipe.name }}{% endfor %}
+{% endblock content %}
