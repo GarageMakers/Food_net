@@ -63,6 +63,9 @@
     <ul>
         {% for recipe in recipes %}
         <li>{{ recipe.name }}</li>
+        <form action={% url 'recipe' recipe.recipe_id%}>
+            <button>Смотреть</button>
+        </form>
         <img class="img-fluid" src={{ recipe.preview.url }}>
         {% endfor %}
         <ul>
