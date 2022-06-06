@@ -1,8 +1,8 @@
 from .models import Recipe
 
 
-menu = [{"title": "Главная", "url_name": "index"},
-        {"title": "Топ 100", "url_name": "top"}]
+menu = [
+    {"title": "Топ 100", "url_name": "top"}]
 
 
 class DataMixin():

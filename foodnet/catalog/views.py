@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, TemplateView
+from django.views.generic import CreateView, ListView, TemplateView, DetailView
 
 from .forms import *
 from .models import Recipe
@@ -19,6 +19,10 @@ def silence(response):
     return HttpResponse("<h1>silence<h1>")
 
 
+def recipe(response, recipe_id):
+    return recipe_id
+
+
 class IndexView(DataMixin, ListView):
     model = Recipe
     template_name = "index.html"
@@ -28,6 +32,11 @@ class IndexView(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Главная страница")
         return dict(list(context.items())+list(c_def.items()))
+
+
+class RecipeDetail(DataMixin, DetailView):
+    model = Recipe
+    template_name = 'recipe.html'
 
 
 class VisitorRecipesView(DataMixin, ListView):
@@ -87,7 +96,7 @@ class RegisterUser(DataMixin, CreateView):
 
 
 class LoginUser(DataMixin, LoginView):
-    form_class = AuthenticationForm
+    form_class = LoginUserForm
     template_name = 'login.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):

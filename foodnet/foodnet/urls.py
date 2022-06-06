@@ -21,12 +21,13 @@ from django.conf import settings
 # from django.contrib.auth.urls
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/login/', views.LoginUser.as_view(), name='login'),
     path('', views.IndexView.as_view(), name='index'),
+    path('recipe/<int:pk>', views.RecipeDetail.as_view(), name='recipe'),
+    path('accounts/login/', views.LoginUser.as_view(), name='login'),
     path('top/', views.top, name="top"),
     path('addRecipe/', views.AddRecipe.as_view(), name="addRecipe"),
     path('accounts/register/', views.RegisterUser.as_view(), name='register'),
-    path('recipeList/', views.VisitorRecipesView.as_view(), name="recipeList")
+    path('recipeList/', views.VisitorRecipesView.as_view(), name="recipeList"),
 
 ]
 urlpatterns += [
