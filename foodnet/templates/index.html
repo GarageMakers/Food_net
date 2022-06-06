@@ -73,18 +73,24 @@
             </nav>
         {% endblock navigator %}
         {% block content %}
-            {% for recipe in recipes %}
-                <div class="justify-content-md-center">
-                    <div class="card" style="width: 20rem;">
-                        <img src={{ recipe.preview.url }} class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ recipe.name }}</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href={% url 'recipe' recipe.recipe_id %} class="btn btn-primary">Go somewhere</a>
-                        </div>
+            <div class="d-flex justify-content-center mt-5">
+                <div style="width:55rem">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        {% for recipe in recipes %}
+                            <div class="col">
+                                <div class="card">
+                                    <img src={{ recipe.preview.url }} class="card-img-top" style="height:250px">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ recipe.name }}</h5>
+                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                        <a href={% url 'recipe' recipe.recipe_id %} class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         {% endblock content %}
     </body>
 </html>
