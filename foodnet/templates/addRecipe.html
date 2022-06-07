@@ -1,45 +1,58 @@
 {% extends 'index.html' %}
 {% block content %}
-<div class='d-flex justify-content-center'>
-    <div class="shadow-lg p-3 mb-5 bg-body rounded mt-5" style="width: 50%;">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form.as_p}}
-            {{ formset.management_form }}
-            <table id="form-container">
-                {% for form in formset %}
-                <div class="step_form">
-                    {{ form.as_p }}
+    <div class='d-flex justify-content-center'>
+        <div class="shadow-lg p-3 mb-5 bg-body rounded mt-5" style="width: 50%;">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {{ formset.management_form }}
+                <table id="form-container">
+                    {% for form in formset %}<div class="step_form">{{ form.as_p }}</div>{% endfor %}
+                </table>
+                <div class="d-flex" id="button-group">
+                    <button id="delete-form" type = "button" style="display:None">Удалить шаг</button>
+                    <button class="me-auto" id="add-form" type="button">Добавить шаг</button>
+                    <button type='submit'>Создать рецепт</button>
                 </div>
-                {% endfor %}
-            </table>
-            <div class="d-flex" id="button-group">
-                <button class="me-auto" id="add-form" type="button">Добавить шаг</button>
-                <button type='submit'>Создать рецепт</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
-<script>
-    let birdForm = document.querySelectorAll(".step_form")
+    <script>
+    let stepForm = document.querySelectorAll(".step_form")
     let container = document.querySelector("#form-container").parentNode
     let addButton = document.querySelector("#add-form")
     let totalForms = document.querySelector("#id_step_set-TOTAL_FORMS")
     let button_group = document.querySelector('#button-group')
+    let form_array = []
+
+    let deleteButton = document.querySelector("#delete-form")
 
     let formNum = 0
     addButton.addEventListener('click', addForm)
+    deleteButton.addEventListener('click', deleteForm)
 
     function addForm(e) {
         e.preventDefault()
 
-        let newForm = birdForm[0].cloneNode(true)
+        let newForm = stepForm[0].cloneNode(true)
         let formRegex = RegExp(`step_set-(\\d){1}-`, 'g')
         formNum++
         newForm.innerHTML = newForm.innerHTML.replace(formRegex, `step_set-${formNum}-`)
+        form_array.push(newForm)
         container.insertBefore(newForm, button_group)
+        deleteButton.style.display = ""
 
         totalForms.setAttribute('value', `${formNum + 1}`) //Increment the number of total forms in the management form
     }
-</script>
+    function deleteForm(e){
+        e.preventDefault()
+        form_array.pop().remove()
+        formNum--
+        totalForms.setAttribute('value', `${formNum + 1}`)
+        if (form_array.length == 0){
+            deleteButton.style.display = "None"
+        }
+
+    }
+    </script>
 {% endblock content %}
