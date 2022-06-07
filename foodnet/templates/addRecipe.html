@@ -1,26 +1,22 @@
 {% extends 'index.html' %}
 {% block content %}
-<div class='d-flex justify-content-center'>
-    <div class="shadow-lg p-3 mb-5 bg-body rounded mt-5" style="width: 50%;">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form.as_p}}
-            {{ formset.management_form }}
-            <table id="form-container">
-                {% for form in formset %}
-                <div class="step_form">
-                    {{ form.as_p }}
+    <div class='d-flex justify-content-center'>
+        <div class="shadow-lg p-3 mb-5 bg-body rounded mt-5" style="width: 50%;">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {{ formset.management_form }}
+                <table id="form-container">
+                    {% for form in formset %}<div class="step_form">{{ form.as_p }}</div>{% endfor %}
+                </table>
+                <div class="d-flex" id="button-group">
+                    <button class="me-auto" id="add-form" type="button">Добавить шаг</button>
+                    <button type='submit'>Создать рецепт</button>
                 </div>
-                {% endfor %}
-            </table>
-            <div class="d-flex" id="button-group">
-                <button class="me-auto" id="add-form" type="button">Добавить шаг</button>
-                <button type='submit'>Создать рецепт</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
-<script>
+    <script>
     let birdForm = document.querySelectorAll(".step_form")
     let container = document.querySelector("#form-container").parentNode
     let addButton = document.querySelector("#add-form")
@@ -41,5 +37,5 @@
 
         totalForms.setAttribute('value', `${formNum + 1}`) //Increment the number of total forms in the management form
     }
-</script>
+    </script>
 {% endblock content %}
