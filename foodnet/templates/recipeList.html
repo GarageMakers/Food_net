@@ -10,7 +10,12 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ recipe.name }}</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href={% url 'recipe' recipe.recipe_id %} class="btn btn-primary">Go somewhere</a>
+                                <div class="d-flex">
+                                    {# djlint:off #}
+                                    <a href={% url 'recipe' recipe.recipe_id %} class="btn btn-primary  me-auto">Смотреть</a>
+                                     <a href={% url 'updateRecipe' recipe.recipe_id %} class="btn btn-primary">Редактировать</a>
+                                    {# djlint:on #}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -18,5 +23,4 @@
             </div>
         </div>
     </div>
-    {% comment %} {% for recipe in visitor_recipes %}{{ recipe.name }}{% endfor %} {% endcomment %}
 {% endblock content %}
