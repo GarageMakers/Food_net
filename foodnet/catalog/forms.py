@@ -9,7 +9,7 @@ RecipeStepFormSet = inlineformset_factory(
     Recipe, Step, fields=("order", "text_field", "photo_path"), extra=1, can_delete=False,
     labels={'order': "Номер шага",
             "text_field": "Текст шага", "photo_path": "Фото"},
-    widgets={'order': forms.NumberInput(attrs={"class": "form-control"}),
+    widgets={'order': forms.HiddenInput(),
              "text_field": forms.Textarea(attrs={"class": "form-control"}),
              "photo_path": forms.FileInput(attrs={"class": "form-control"})})
 
