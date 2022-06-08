@@ -15,14 +15,6 @@ def top(response):
     return HttpResponse("<h1>silence<h1>")
 
 
-def silence(response):
-    return HttpResponse("<h1>silence<h1>")
-
-
-def recipe(response, recipe_id):
-    return recipe_id
-
-
 class IndexView(DataMixin, ListView):
     model = Recipe
     template_name = "index.html"
