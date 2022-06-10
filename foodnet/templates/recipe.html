@@ -4,10 +4,18 @@
         <div class="shadow-lg p-3 mb-5 bg-body rounded mt-5" style="width: 80rem;">
             <div class = "d-flex justify-content-center">
                 <div class="d-flex flex-column mt-5">
-                    <h1>{{ recipe.name }}</h1>
-                    <ul>
-                        {% for step in steps %}<li>{{ step.text_field }}</li>{% endfor %}
-                    </ul>
+                    <h1 class='px-5'>{{ recipe.name }}</h1>
+                    {% for step in steps %}
+                        <div class = "d-flex flex-row m-3 p-2 shadow-none bg-light rounded">
+                            <img class = "rounded" src={{ step.photo_path.url }}>
+                            <div>
+                                <p class="align-self-center fs-4 px-5 pt-5">{{ step.text_field }}</p>
+                                <div class="d-flex flex-row-reverse mb-2">
+                                    <a href={% url 'updateStep' step.pk %} class="btn btn-success pb-2">Обновить</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

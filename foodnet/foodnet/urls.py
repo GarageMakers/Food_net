@@ -29,7 +29,9 @@ urlpatterns = [
     path('accounts/register/', views.RegisterUser.as_view(), name='register'),
     path('recipeList/', views.VisitorRecipesView.as_view(), name="recipeList"),
     path('recipeList/updateRecipe/<int:pk>',
-         views.UpdateRecipeForm.as_view(), name='updateRecipe')
+         views.UpdateRecipeForm.as_view(), name='updateRecipe'),
+    path('recipeList/updateStep/<int:pk>',
+         views.UpdateStepForm.as_view(), name='updateStep')
 
 ]
 urlpatterns += [
