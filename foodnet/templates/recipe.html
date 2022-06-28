@@ -11,7 +11,10 @@
                             <div>
                                 <p class="align-self-center fs-4 px-5 pt-5">{{ step.text_field }}</p>
                                 <div class="d-flex flex-row-reverse mb-2">
-                                    <a href={% url 'updateStep' step.pk %} class="btn btn-success pb-2">Обновить</a>
+                                    {% if request.user.visitor == step.recept_id.creator %}
+                                        <a href={% url 'updateStep' step.pk %} class="btn btn-success pb-2">Обновить</a>
+                                    {% else %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

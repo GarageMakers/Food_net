@@ -22,6 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.IndexView.as_view(), name='index'),
+    path('recipeList/recipe/<int:pk>', views.RecipeDetail.as_view(), name='own_recipe'),
     path('recipe/<int:pk>', views.RecipeDetail.as_view(), name='recipe'),
     path('accounts/login/', views.LoginUser.as_view(), name='login'),
     path('top/', views.top, name="top"),
