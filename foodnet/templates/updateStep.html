@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class='d-flex justify-content-center'>
+        <div class="shadow-lg p-3 mb-5 bg-body rounded mt-5" style="width: 50rem;">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Обновить">
+            </form>
+        </div>
+    </div>
+{% endblock content %}

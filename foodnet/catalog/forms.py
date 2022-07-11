@@ -25,10 +25,13 @@ class AddRecipeForm(forms.ModelForm):
 
 
 class AddStepForm(forms.ModelForm):
+    text_field = forms.CharField(label='Текст', widget=forms.Textarea(
+        attrs={'class': "form-control"}))
 
     class Meta:
         model = Step
         fields = '__all__'
+        exclude = ['order', "recept_id"]
 
 
 class RegisterUserForm(UserCreationForm):
