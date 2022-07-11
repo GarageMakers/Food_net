@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
 
@@ -52,6 +52,12 @@ class Recipe(models.Model):
         return 'index'
 
 
+@receiver(pre_delete, sender=Recipe)
+def image_model_delete(sender, instance, **kwargs):
+    if instance.preview.name:
+        instance.preview.delete(False)
+
+
 class Comment(models.Model):
 
     user_id = models.ForeignKey('Visitor', on_delete=models.CASCADE)
@@ -76,6 +82,12 @@ class Step(models.Model):
 
     def __str__(self):
         return self.text_field[:11]+'...'
+
+
+@receiver(pre_delete, sender=Step)
+def image_model_delete(sender, instance, **kwargs):
+    if instance.photo_path.name:
+        instance.photo_path.delete(False)
 
 
 class Ingredient(models.Model):

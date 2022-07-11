@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DetailView, DeleteView
 
 from .forms import *
@@ -142,12 +142,14 @@ class UpdateStepForm(DataMixin, UpdateView):
 class DeleteStepForm(DataMixin, DeleteView):
     model = Step
     template_name = 'deleteStep.html'
-    success_url = reverse_lazy('recipe')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Удалить шаг")
         return dict(list(context.items())+list(c_def.items()))
+
+    def get_success_url(self) -> str:
+        return reverse("recipe", kwargs={'pk': self.object.recept_id.pk})
 
 
 class DeleteRecipeForm(DataMixin, DeleteView):
