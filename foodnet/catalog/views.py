@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, DetailView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView, DeleteView
 
 from .forms import *
 from .models import Recipe
@@ -119,7 +119,6 @@ class UpdateRecipeForm(FormsetMixin, DataMixin, UpdateView):
     template_name = 'updateRecipe.html'
     form_class = AddRecipeForm
     formset_class = RecipeStepFormSet
-    template_name_suffix = '_update_form'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -137,4 +136,27 @@ class UpdateStepForm(DataMixin, UpdateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Редактирование")
+        return dict(list(context.items())+list(c_def.items()))
+
+
+class DeleteStepForm(DataMixin, DeleteView):
+    model = Step
+    template_name = 'deleteStep.html'
+    success_url = reverse_lazy('recipe')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить шаг")
+        return dict(list(context.items())+list(c_def.items()))
+
+
+class DeleteRecipeForm(DataMixin, DeleteView):
+    model = Recipe
+    template_name = 'deleteRecipe.html'
+    success_url = reverse_lazy('recipeList')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['recipe'] = self.get_object()
+        c_def = self.get_user_context(title="Удалить рецепт")
         return dict(list(context.items())+list(c_def.items()))

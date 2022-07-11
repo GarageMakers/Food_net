@@ -4,15 +4,23 @@
         <div class="shadow-lg p-3 mb-5 bg-body rounded mt-5" style="width: 80rem;">
             <div class = "d-flex justify-content-center">
                 <div class="d-flex flex-column mt-5">
-                    <h1 class='px-5'>{{ recipe.name }}</h1>
+                    <div class="d-flex justify-content-start">
+                        <h1 class='px-5 me-auto'>{{ recipe.name }}</h1>
+                        <a class ='px-5 h1' href='#'>
+                            <i class="bi bi-person-circle"></i> {{ recipe.creator.user.first_name }} {{ recipe.creator.user.last_name }}
+                        </a>
+                    </div>
                     {% for step in steps %}
                         <div class = "d-flex flex-row m-3 p-2 shadow-none bg-light rounded">
                             <img class = "rounded" src={{ step.photo_path.url }}>
-                            <div>
+                            <div class='p-2'>
                                 <p class="align-self-center fs-4 px-5 pt-5">{{ step.text_field }}</p>
                                 <div class="d-flex flex-row-reverse mb-2">
                                     {% if request.user.visitor == step.recept_id.creator %}
-                                        <a href={% url 'updateStep' step.pk %} class="btn btn-success pb-2">Обновить</a>
+                                        {# djlint:off #}
+                                        <a href={% url 'updateStep' step.pk %} class="btn btn-success me-5 pb-2">Обновить</a>
+                                        <a href={% url 'deleteStep' step.pk %} class="btn btn-danger me-auto ms-5 pb-2">Удалить</a>
+                                        {# djlint:on #}
                                     {% else %}
                                     {% endif %}
                                 </div>

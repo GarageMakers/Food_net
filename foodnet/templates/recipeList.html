@@ -3,22 +3,30 @@
     <div class="d-flex justify-content-center mt-5">
         <div style="width:55rem">
             <div class="row row-cols-1 row-cols-md-3 g-4">
-                {% for recipe in visitor_recipes %}
-                    <div class="col">
-                        <div class="card">
-                            <img src={{ recipe.preview.url }} class="card-img-top" style="height:250px">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ recipe.name }}</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <div class="d-flex">
-                                    {# djlint:off #}
-                                    <a href={% url 'own_recipe' recipe.recipe_id %} class="btn btn-primary  me-auto">Смотреть</a>
-                                    {# djlint:on #}
+                {% if visitor_recipes %}
+                    {% for recipe in visitor_recipes %}
+                        <div class="col">
+                            <div class="card">
+                                <img src={{ recipe.preview.url }} class="card-img-top" style="height:250px">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ recipe.name }}</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <div class="d-flex">
+                                        {# djlint:off #}
+                                        <a href={% url 'deleteRecipe' recipe.recipe_id %} class="btn btn-danger">Удалить</a>
+                                        <a href={% url 'own_recipe' recipe.recipe_id %} class="btn btn-primary  ms-auto">Редактировать</a>
+                                        {# djlint:on #}
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    {% endfor %}
+                {% else %}
+                    <div>
+                        <p>У Вас еще нет рецептов. Желаете добавить?</p>
+                        <a href={% url 'addRecipe' %} class='btn btn-primary'>Добавить</a>
                     </div>
-                {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>

@@ -1,0 +1,8 @@
+{% extends 'index.html' %}
+{% block content %}
+    <form method='post'>
+        {% csrf_token %}
+        <p>Вы действительно хотите удалить рецепт "{{ recipe }}"</p>
+        <button type='submit'>Да</button>
+    </form>
+{% endblock content %}

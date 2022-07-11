@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% block content %}
+    <form method = 'post'>
+        {% csrf_token %}
+        <p>Вы действительно хотите удалить данный шаг?</p>
+        <div class = "d-flex flex-row m-3 p-2 shadow-none bg-light rounded">
+            <img class = "rounded" src={{ step.photo_path.url }}>
+            <div class='p-2'>
+                <p class="align-self-center fs-4 px-5 pt-5">{{ step.text_field }}</p>
+                <div class="d-flex flex-row-reverse mb-2"></div>
+            </div>
+        </div>
+        <button type= 'submit'>Да</button>
+    </form>
+{% endblock content %}
