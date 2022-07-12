@@ -1,4 +1,5 @@
 
+from logging.handlers import DatagramHandler
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.http import Http404, HttpResponse
@@ -103,8 +104,22 @@ class AddRecipe(FormsetMixin, CreateView, DataMixin):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Создание рецепта")
-        return dict(list(context.items())+list(c_def.items()))
+        # c_def = self.get_user_context(title="Создание рецепта")
+        return dict(list(context.items()))
+
+    def form_valid(self, form, formset):
+        form.instance.user_id = self.request.user.visitor
+        # form.instance.recept_id =
+        self.object = form.save()
+        formset.instance = self.object
+        formset.save()
+        return redirect(self.object.get_absolute_url())
+
+
+class AddComment(CreateView, DataMixin):
+    model = Comment
+    template_name = 'recipe.html'
+    # form_class = pass
 
     def form_valid(self, form, formset):
         form.instance.creator = self.request.user.visitor
@@ -112,6 +127,11 @@ class AddRecipe(FormsetMixin, CreateView, DataMixin):
         formset.instance = self.object
         formset.save()
         return redirect(self.object.get_absolute_url())
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Создание рецепта")
+        return dict(list(context.items())+list(c_def.items()))
 
 
 class UpdateRecipeForm(FormsetMixin, DataMixin, UpdateView):

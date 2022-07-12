@@ -31,4 +31,32 @@
             </div>
         </div>
     </div>
+    <div class='container'>
+        <div class='row'>
+            <div class='col-1'>
+                <i class="bi bi-person-circle fs-1"></i>
+            </div>
+            <p>
+                <b>{{ request.user.first_name }} {{ request.user.last_name }}</b>
+            </p>
+            <form method='post'>
+                {% csrf_token %}
+                {{ form }}
+                <button type='sumbit'>Добавить</button>
+            </form>
+        </div>
+        {% for comment in recipe.comments.all %}
+            <div class='row'>
+                <div class='col-1'>
+                    <i class="bi bi-person-circle fs-1"></i>
+                </div>
+                <div class='col'>
+                    <p>
+                        <b>{{ comment.user_id.user.first_name }} {{ comment.user_id.user.last_name }}</b>
+                    </p>
+                    <a>{{ comment.text_field }}</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock content %}

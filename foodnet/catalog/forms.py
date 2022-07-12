@@ -60,3 +60,8 @@ class LoginUserForm(AuthenticationForm):
         attrs={'class': 'form-control'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(
         attrs={'class': 'form-control'}))
+
+
+class AddCommentForm(forms.ModelForm):
+    text_field = forms.CharField(label='Комментарий', widget=forms.TextInput(
+        attrs={'class': 'form-control'}))

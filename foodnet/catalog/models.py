@@ -17,9 +17,6 @@ class Visitor(models.Model):
         if created:
             Visitor.objects.create(user=instance, isBanned=False)
 
-    # @receiver(post_save, sender=User)
-    # def save_user_profile(sender, instance, **kwargs):
-    #     instance.visitor.save()
     @login_required
     def my_recipes(request):
         return Recipe.objects.filter(visitor__user=request.user)
@@ -60,9 +57,10 @@ def image_model_delete(sender, instance, **kwargs):
 
 class Comment(models.Model):
 
-    user_id = models.ForeignKey('Visitor', on_delete=models.CASCADE)
+    user_id = models.OneToOneField('Visitor', on_delete=models.CASCADE)
 
-    recept_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
+    recept_id = models.ForeignKey(
+        'Recipe', on_delete=models.CASCADE, related_name='comments')
 
     text_field = models.TextField()
 
