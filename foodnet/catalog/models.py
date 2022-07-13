@@ -59,7 +59,7 @@ class Comment(models.Model):
 
     user_id = models.OneToOneField('Visitor', on_delete=models.CASCADE)
 
-    recept_id = models.ForeignKey(
+    recipe_id = models.ForeignKey(
         'Recipe', on_delete=models.CASCADE, related_name='comments')
 
     text_field = models.TextField()

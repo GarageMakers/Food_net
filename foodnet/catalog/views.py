@@ -1,12 +1,14 @@
 
-from logging.handlers import DatagramHandler
-from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic import FormView
 from django.contrib.auth.views import LoginView
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.shortcuts import redirect
-from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, ListView, UpdateView, DetailView, DeleteView
+from django.urls import reverse, reverse_lazy
+from django.views import View
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
 
+from django.views.generic.detail import SingleObjectMixin
 from .forms import *
 from .models import Recipe
 from .utils import DataMixin, FormsetMixin
@@ -54,17 +56,6 @@ class IndexView(DataMixin, ListView):
         return dict(list(context.items())+list(c_def.items()))
 
 
-class RecipeDetail(DetailView, DataMixin):
-    model = Recipe
-    template_name = 'recipe.html'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Foodnet")
-        context["steps"] = self.get_object().step_set.all()
-        return dict(list(context.items())+list(c_def.items()))
-
-
 class VisitorRecipesView(DataMixin, ListView):
     model = Recipe
     template_name = "recipeList.html"
@@ -108,30 +99,11 @@ class AddRecipe(FormsetMixin, CreateView, DataMixin):
         return dict(list(context.items()))
 
     def form_valid(self, form, formset):
-        form.instance.user_id = self.request.user.visitor
-        # form.instance.recept_id =
-        self.object = form.save()
-        formset.instance = self.object
-        formset.save()
-        return redirect(self.object.get_absolute_url())
-
-
-class AddComment(CreateView, DataMixin):
-    model = Comment
-    template_name = 'recipe.html'
-    # form_class = pass
-
-    def form_valid(self, form, formset):
         form.instance.creator = self.request.user.visitor
         self.object = form.save()
         formset.instance = self.object
         formset.save()
         return redirect(self.object.get_absolute_url())
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Создание рецепта")
-        return dict(list(context.items())+list(c_def.items()))
 
 
 class UpdateRecipeForm(FormsetMixin, DataMixin, UpdateView):
@@ -182,3 +154,51 @@ class DeleteRecipeForm(DataMixin, DeleteView):
         context['recipe'] = self.get_object()
         c_def = self.get_user_context(title="Удалить рецепт")
         return dict(list(context.items())+list(c_def.items()))
+
+
+class RecipeDetail(DetailView, DataMixin):
+    model = Recipe
+    template_name = 'recipe.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Foodnet")
+        context["steps"] = self.get_object().step_set.all()
+        if self.request.user.is_authenticated:
+            context['form'] = CommentForm
+        return dict(list(context.items())+list(c_def.items()))
+
+
+class CommentInterestFormView(SingleObjectMixin, FormView):
+    template_name = 'books/author_detail.html'
+    form_class = CommentForm
+    model = Recipe
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+        self.object = self.get_object()
+        form = self.get_form()
+        form.instance.user_id = request.user.visitor
+        form.instance.recipe_id = self.get_object()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('recipe', kwargs={'pk': self.object.pk})
+
+
+class RecipeView(View):
+    def get(self, request, *args, **kwargs):
+        view = RecipeDetail.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        view = CommentInterestFormView.as_view()
+        return view(request, *args, **kwargs)

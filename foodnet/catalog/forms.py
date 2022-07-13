@@ -62,6 +62,11 @@ class LoginUserForm(AuthenticationForm):
         attrs={'class': 'form-control'}))
 
 
-class AddCommentForm(forms.ModelForm):
+class CommentForm(forms.ModelForm):
     text_field = forms.CharField(label='Комментарий', widget=forms.TextInput(
         attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+        exclude = ['user_id', 'recipe_id']
