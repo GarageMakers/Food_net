@@ -57,7 +57,7 @@ def image_model_delete(sender, instance, **kwargs):
 
 class Comment(models.Model):
 
-    user_id = models.OneToOneField('Visitor', on_delete=models.CASCADE)
+    user_id = models.ForeignKey('Visitor', on_delete=models.CASCADE)
 
     recipe_id = models.ForeignKey(
         'Recipe', on_delete=models.CASCADE, related_name='comments')

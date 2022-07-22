@@ -1,9 +1,8 @@
 from django import forms
-from .models import *
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.forms import inlineformset_factory
 
+from .models import *
 
 RecipeStepFormSet = inlineformset_factory(
     Recipe, Step, fields=("order", "text_field", "photo_path"), extra=1, can_delete=False,

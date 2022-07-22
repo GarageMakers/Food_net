@@ -1,14 +1,13 @@
 
-from django.views.generic import FormView
 from django.contrib.auth.views import LoginView
-from django.http import Http404, HttpResponse, HttpResponseForbidden
+from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
-                                  UpdateView)
-
+from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
+                                  ListView, UpdateView)
 from django.views.generic.detail import SingleObjectMixin
+
 from .forms import *
 from .models import Recipe
 from .utils import DataMixin, FormsetMixin
@@ -155,6 +154,58 @@ class DeleteRecipeForm(DataMixin, DeleteView):
         c_def = self.get_user_context(title="Удалить рецепт")
         return dict(list(context.items())+list(c_def.items()))
 
+# without ajax
+
+
+# class RecipeDetail(DetailView, DataMixin):
+#     model = Recipe
+#     template_name = 'recipe.html'
+
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         c_def = self.get_user_context(title="Foodnet")
+#         context["steps"] = self.get_object().step_set.all()
+#         if self.request.user.is_authenticated:
+#             context['form'] = CommentForm
+#         return dict(list(context.items())+list(c_def.items()))
+
+
+# class CommentInterestFormView(SingleObjectMixin, FormView):
+#     template_name = 'books/author_detail.html'
+#     form_class = CommentForm
+#     model = Recipe
+
+#     def post(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             return HttpResponseForbidden()
+#         self.object = self.get_object()
+#         form = self.get_form()
+#         form.instance.user_id = request.user.visitor
+#         form.instance.recipe_id = self.get_object()
+#         if form.is_valid():
+#             return self.form_valid(form)
+#         else:
+#             return self.form_invalid(form)
+
+#     def form_valid(self, form):
+#         form.save()
+#         return super().form_valid(form)
+
+#     def get_success_url(self):
+#         return reverse('recipe', kwargs={'pk': self.object.pk})
+
+
+# class RecipeView(View):
+#     def get(self, request, *args, **kwargs):
+#         view = RecipeDetail.as_view()
+#         return view(request, *args, **kwargs)
+
+#     def post(self, request, *args, **kwargs):
+#         view = CommentInterestFormView.as_view()
+#         return view(request, *args, **kwargs)
+# without ajax
+# with ajax
+
 
 class RecipeDetail(DetailView, DataMixin):
     model = Recipe
@@ -169,8 +220,8 @@ class RecipeDetail(DetailView, DataMixin):
         return dict(list(context.items())+list(c_def.items()))
 
 
-class CommentInterestFormView(SingleObjectMixin, FormView):
-    template_name = 'books/author_detail.html'
+class CommentFormView(SingleObjectMixin, FormView):
+    template_name = 'recipe.html'
     form_class = CommentForm
     model = Recipe
 
@@ -183,22 +234,24 @@ class CommentInterestFormView(SingleObjectMixin, FormView):
         form.instance.recipe_id = self.get_object()
         if form.is_valid():
             return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
 
     def form_valid(self, form):
+        """
+        Если форма валидна, вернем код 200
+        вместе с именем пользователя
+        """
+        text_field = form.cleaned_data['text_field']
+        # user_id = form.cleaned_data['user_id']
+        # recipe_id = form.cleaned_data['recipe_id']
         form.save()
-        return super().form_valid(form)
+        return JsonResponse({"text_field": text_field}, status=200)
+
+    def form_invalid(self, form):
+        """
+        Если форма невалидна, возвращаем код 400 с ошибками.
+        """
+        errors = form.errors.as_json()
+        return JsonResponse({"errors": errors}, status=400)
 
     def get_success_url(self):
         return reverse('recipe', kwargs={'pk': self.object.pk})
-
-
-class RecipeView(View):
-    def get(self, request, *args, **kwargs):
-        view = RecipeDetail.as_view()
-        return view(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        view = CommentInterestFormView.as_view()
-        return view(request, *args, **kwargs)

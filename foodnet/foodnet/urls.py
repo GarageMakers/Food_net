@@ -14,10 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from catalog import views
-from django.contrib import admin
-from django.urls import path, include
-from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
 
 # from django.contrib.auth.urls
 urlpatterns = [
@@ -25,7 +25,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('recipeList/recipe/<int:pk>',
          views.RecipeDetail.as_view(), name='own_recipe'),
-    path('recipe/<int:pk>', views.RecipeView.as_view(), name='recipe'),
+    path('recipe/<int:pk>', views.RecipeDetail.as_view(), name='recipe'),
     path('accounts/login/', views.LoginUser.as_view(), name='login'),
     path('top/', views.top, name="top"),
     path('addRecipe/', views.AddRecipe.as_view(), name="addRecipe"),
@@ -36,7 +36,9 @@ urlpatterns = [
     path('recipeList/deleteStep/<int:pk>',
          views.DeleteStepForm.as_view(), name='deleteStep'),
     path('recipeList/deleteRecipe/<int:pk>',
-         views.DeleteRecipeForm.as_view(), name='deleteRecipe')
+         views.DeleteRecipeForm.as_view(), name='deleteRecipe'),
+    path('comment-form/<int:pk>',
+         views.CommentFormView.as_view(), name='comment_form'),
 
 
 ]
