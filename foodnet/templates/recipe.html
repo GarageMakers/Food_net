@@ -70,20 +70,14 @@
           // отслеживаем событие отправки формы
           $('#CommentForm').submit(function () {
               // создаем AJAX-вызов
+              let comment = $(this).serializeArray()[1]['value'];
               $.ajax({
                   data: $(this).serialize(), // получаем данные формы
                   type: $(this).attr('method'), // GET или POST
                   url: '{% url 'comment_form' recipe.pk%}',
                   // если успешно, то
                   success: function (response) {
-                    console.log($('#CommentForm'))
-                    for (key in $('#CommentForm')) {
-                        console.log(key)
-                        // тело цикла выполняется для каждого свойства объекта
-                      }
-                    {% comment %} let comment = formData.get('text_field') {% endcomment %}
-                    {% comment %} console.log(comment) {% endcomment %}
-                    {% comment %} $('#Comment').after("<div class='row'><div class='col-1'><i class='bi bi-person-circle fs-1'></i></div><div class='col'><p><b>{{ request.user.first_name }} {{ request.user.last_name }}</b></p><a>{{comment}}</a></div>"); {% endcomment %}
+                    $('#Comment').after(`<div class='row'><div class='col-1'><i class='bi bi-person-circle fs-1'></i></div><div class='col'><p><b>{{ request.user.first_name }} {{ request.user.last_name }}</b></p><a>${comment}</a></div>`);
                   },
                   // если ошибка, то
                   error: function (response) {
