@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
+from numpy import ones
 
 
 class Visitor(models.Model):
@@ -110,3 +111,16 @@ class FriendList(models.Model):
 
     def __str__(self):
         return f"Друзья"
+
+
+class Grade(models.Model):
+    user = models.ForeignKey('Visitor', on_delete=models.PROTECT)
+    recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE)
+
+    class Rate(models.IntegerChoices):
+        one = 1
+        two = 2
+        three = 3
+        four = 4
+        five = 5
+    grade = models.IntegerField(choices=Rate.choices)

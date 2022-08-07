@@ -216,8 +216,14 @@ class RecipeDetail(DetailView, DataMixin):
         c_def = self.get_user_context(title="Foodnet")
         context["steps"] = self.get_object().step_set.all()
         if self.request.user.is_authenticated:
-            context['form'] = CommentForm
+            context['comment_form'] = CommentForm
+            context['grade_form'] = GradeForm
         return dict(list(context.items())+list(c_def.items()))
+
+    # def post(self, request, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 
 class CommentFormView(SingleObjectMixin, FormView):
@@ -241,10 +247,43 @@ class CommentFormView(SingleObjectMixin, FormView):
         вместе с именем пользователя
         """
         text_field = form.cleaned_data['text_field']
-        # user_id = form.cleaned_data['user_id']
-        # recipe_id = form.cleaned_data['recipe_id']
         form.save()
         return JsonResponse({"text_field": text_field}, status=200)
+
+    def form_invalid(self, form):
+        """
+        Если форма невалидна, возвращаем код 400 с ошибками.
+        """
+        errors = form.errors.as_json()
+        return JsonResponse({"errors": errors}, status=400)
+
+    def get_success_url(self):
+        return reverse('recipe', kwargs={'pk': self.object.pk})
+
+
+class CreateGrade(SingleObjectMixin, FormView):
+    template_name = 'recipe.html'
+    form_class = GradeForm
+    model = Recipe
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+        self.object = self.get_object()
+        form = self.get_form()
+        form.instance.user = request.user.visitor
+        form.instance.recipe = self.get_object()
+        if form.is_valid():
+            return self.form_valid(form)
+
+    def form_valid(self, form):
+        """
+        Если форма валидна, вернем код 200
+        вместе с именем пользователя
+        """
+        grade = form.cleaned_data['grade']
+        form.save()
+        return JsonResponse({"grade": grade}, status=200)
 
     def form_invalid(self, form):
         """

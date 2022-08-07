@@ -39,7 +39,7 @@ urlpatterns = [
          views.DeleteRecipeForm.as_view(), name='deleteRecipe'),
     path('comment-form/<int:pk>',
          views.CommentFormView.as_view(), name='comment_form'),
-
+    path('grade-form/<int:pk>', views.CreateGrade.as_view(), name='grade_form'),
 
 ]
 urlpatterns += [

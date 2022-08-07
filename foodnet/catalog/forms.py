@@ -1,3 +1,4 @@
+from dataclasses import field
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.forms import inlineformset_factory
@@ -69,3 +70,9 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = '__all__'
         exclude = ['user_id', 'recipe_id']
+
+
+class GradeForm(forms.ModelForm):
+    class Meta:
+        model = Grade
+        fields = ['grade']

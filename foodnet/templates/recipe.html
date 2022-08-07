@@ -33,6 +33,11 @@
     </div>
     <div class='container'>
         {% if request.user.is_authenticated %}
+            <form id='GradeForm' method='post'>
+                {% csrf_token %}
+                {{ grade_form.as_p }}
+                <button type='sumbit'>Ок</button>
+            </form>
             <div class='row' id = 'Comment'>
                 <div class='col-1'>
                     <i class="bi bi-person-circle fs-1"></i>
@@ -42,7 +47,7 @@
                 </p>
                 <form id='CommentForm' method='post'>
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ comment_form.as_p }}
                     <button type='sumbit'>Добавить</button>
                 </form>
             </div>
@@ -88,6 +93,22 @@
               });
               return false;
           });
+        $('#GradeForm').submit(function () {
+            $.ajax({
+                data: $(this).serialize(), // получаем данные формы
+                type: $(this).attr('method'), // GET или POST
+                url: '{% url 'grade_form' recipe.pk%}',
+                success:function(response){
+                    console.log('success')
+                },
+                error: function (response){
+                    alert(response.responseJSON.errors);
+                    console.log(response.responseJSON.errors)
+                }
+            });
+            return false;
+        })
+
       })
     </script>
 {% endblock javascript %}
