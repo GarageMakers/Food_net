@@ -75,4 +75,5 @@ class CommentForm(forms.ModelForm):
 class GradeForm(forms.ModelForm):
     class Meta:
         model = Grade
-        fields = ['grade']
+        # fields = ['grade']
+        exclude = '__all__'

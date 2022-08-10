@@ -35,9 +35,17 @@
         {% if request.user.is_authenticated %}
             <form id='GradeForm' method='post'>
                 {% csrf_token %}
+                <button type='sumbit' id='one' class="star_rate bi bi-star my-btm"></button>
+                <button type='sumbit' id='two' class="star_rate bi bi-star my-btm"></button>
+                <button type='sumbit' id='three' class="star_rate bi bi-star my-btm"></button>
+                <button type='sumbit' id='four' class="star_rate bi bi-star my-btm"></button>
+                <button type='sumbit' id='five' class="star_rate bi bi-star my-btm"></button>
+            </form>
+            {% comment %} <form id='GradeForm' method='post'>
+                {% csrf_token %}
                 {{ grade_form.as_p }}
                 <button type='sumbit'>Ок</button>
-            </form>
+            </form> {% endcomment %}
             <div class='row' id = 'Comment'>
                 <div class='col-1'>
                     <i class="bi bi-person-circle fs-1"></i>
@@ -93,7 +101,7 @@
               });
               return false;
           });
-        $('#GradeForm').submit(function () {
+        /*$('#GradeForm').submit(function () {
             $.ajax({
                 data: $(this).serialize(), // получаем данные формы
                 type: $(this).attr('method'), // GET или POST
@@ -107,8 +115,73 @@
                 }
             });
             return false;
-        })
-
+        });*/
+        const ratingStars = [...document.getElementsByClassName("star_rate")];
+        const form = document.getElementById('GradeForm')
+        const getNumVal = (strval)=>{
+            let NumVal
+            if (strval==='one'){
+                NumVal = 1
+            }else if (strval==='two'){
+                NumVal = 2
+            }else if (strval==='three'){
+                NumVal =3
+            }else if (strval==='four'){
+                NumVal=4
+            }else if (strval==='five'){
+                NumVal = 5
+            }
+            return NumVal
+        }
+        function executeRating(stars){
+            const starClassActive = 'star_rate bi bi-star-fill my-btm';
+            const starClassInactive = 'star_rate bi bi-star my-btm';
+            const starsLength = stars.length;
+            let i;
+            stars.map((star)=>{
+                star.addEventListener('mouseenter', e =>{
+                    i = stars.indexOf(star);
+                    if (star.className===starClassInactive){
+                        for (i; i>=0; --i) stars[i].className = starClassActive;
+                    }
+                    else {
+                        for (i;i<starsLength;++i) stars[i].className = starClassInactive;
+                    }
+                })
+            });
+        };
+        executeRating(ratingStars);
+        ratingStars.forEach(star=>star.addEventListener('click', (event)=>{
+            const val = event.target.id
+            console.log(val)
+            console.log(form)
+            const valNum = getNumVal(val)
+            form.addEventListener('sumbit', e=>{
+                
+                e.preventDefault();
+                $.ajax({
+                    data: {'grade':valNum}, // получаем данные формы
+                    type:'POST', // GET или POST
+                    url: '{% url 'grade_form' recipe.pk%}',
+                    success:function(response){
+                        console.log(data)
+                    },
+                    error: function (response){
+                        alert(response.responseJSON.errors);
+                        console.log(response.responseJSON.errors)
+                    }
+                })
+                return false;
+            })
+        }))
       })
     </script>
 {% endblock javascript %}
+{% block style %}
+    <style>
+    .my-btm{
+        border: 0 !important;
+        background:inherit !important;
+    }
+    </style>
+{% endblock style %}

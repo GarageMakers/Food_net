@@ -217,7 +217,7 @@ class RecipeDetail(DetailView, DataMixin):
         context["steps"] = self.get_object().step_set.all()
         if self.request.user.is_authenticated:
             context['comment_form'] = CommentForm
-            context['grade_form'] = GradeForm
+            # context['grade_form'] = GradeForm
         return dict(list(context.items())+list(c_def.items()))
 
     # def post(self, request, *args, **kwargs):
@@ -261,36 +261,49 @@ class CommentFormView(SingleObjectMixin, FormView):
         return reverse('recipe', kwargs={'pk': self.object.pk})
 
 
-class CreateGrade(SingleObjectMixin, FormView):
+# class CreateGrade(SingleObjectMixin, FormView):
+#     template_name = 'recipe.html'
+#     model = Recipe
+
+#     def post(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             return HttpResponseForbidden()
+#         self.object = self.get_object()
+#         form = self.get_form()
+#         form.instance.user = request.user.visitor
+#         form.instance.recipe = self.get_object()
+#         if form.is_valid():
+#             return self.form_valid(form)
+
+#     def form_valid(self, form):
+#         """
+#         Если форма валидна, вернем код 200
+#         вместе с именем пользователя
+#         """
+#         grade = form.cleaned_data['grade']
+#         form.save()
+#         return JsonResponse({"grade": grade}, status=200)
+
+#     def form_invalid(self, form):
+#         """
+#         Если форма невалидна, возвращаем код 400 с ошибками.
+#         """
+#         errors = form.errors.as_json()
+#         return JsonResponse({"errors": errors}, status=400)
+
+#     def get_success_url(self):
+#         return reverse('recipe', kwargs={'pk': self.object.pk})
+class CreateGrade(SingleObjectMixin, View):
     template_name = 'recipe.html'
-    form_class = GradeForm
     model = Recipe
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseForbidden()
         self.object = self.get_object()
-        form = self.get_form()
-        form.instance.user = request.user.visitor
-        form.instance.recipe = self.get_object()
-        if form.is_valid():
-            return self.form_valid(form)
-
-    def form_valid(self, form):
-        """
-        Если форма валидна, вернем код 200
-        вместе с именем пользователя
-        """
-        grade = form.cleaned_data['grade']
-        form.save()
+        grade = request.POST.get('grade')
+        Grade(user=request.user.visitor, recipe=self.object, grade=grade).save()
         return JsonResponse({"grade": grade}, status=200)
-
-    def form_invalid(self, form):
-        """
-        Если форма невалидна, возвращаем код 400 с ошибками.
-        """
-        errors = form.errors.as_json()
-        return JsonResponse({"errors": errors}, status=400)
 
     def get_success_url(self):
         return reverse('recipe', kwargs={'pk': self.object.pk})

@@ -1,3 +1,4 @@
+from enum import unique
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import models
@@ -123,4 +124,8 @@ class Grade(models.Model):
         three = 3
         four = 4
         five = 5
+
     grade = models.IntegerField(choices=Rate.choices)
+
+    class Meta:
+        unique_together = [['user']]
