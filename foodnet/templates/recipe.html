@@ -41,11 +41,6 @@
                 <button type='sumbit' id='four' class="star_rate bi bi-star my-btm"></button>
                 <button type='sumbit' id='five' class="star_rate bi bi-star my-btm"></button>
             </form>
-            {% comment %} <form id='GradeForm' method='post'>
-                {% csrf_token %}
-                {{ grade_form.as_p }}
-                <button type='sumbit'>Ок</button>
-            </form> {% endcomment %}
             <div class='row' id = 'Comment'>
                 <div class='col-1'>
                     <i class="bi bi-person-circle fs-1"></i>
@@ -101,21 +96,6 @@
               });
               return false;
           });
-        /*$('#GradeForm').submit(function () {
-            $.ajax({
-                data: $(this).serialize(), // получаем данные формы
-                type: $(this).attr('method'), // GET или POST
-                url: '{% url 'grade_form' recipe.pk%}',
-                success:function(response){
-                    console.log('success')
-                },
-                error: function (response){
-                    alert(response.responseJSON.errors);
-                    console.log(response.responseJSON.errors)
-                }
-            });
-            return false;
-        });*/
         const ratingStars = [...document.getElementsByClassName("star_rate")];
         const form = document.getElementById('GradeForm')
         const getNumVal = (strval)=>{
@@ -161,7 +141,7 @@
                 e.preventDefault();
                 $.ajax({
                     data: {'grade':valNum}, // получаем данные формы
-                    type:'POST', // GET или POST
+                    type: $(this).attr('method'), // GET или POST
                     url: '{% url 'grade_form' recipe.pk%}',
                     success:function(response){
                         console.log(data)
